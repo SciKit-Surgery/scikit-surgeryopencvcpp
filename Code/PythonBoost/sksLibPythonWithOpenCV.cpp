@@ -20,6 +20,7 @@
 =============================================================================*/
 #define PY_ARRAY_UNIQUE_SYMBOL pbcvt_ARRAY_API
 
+#include "sksTriangulate.h"
 #include "sksException.h"
 
 #include <boost/python.hpp>
@@ -30,12 +31,6 @@
 #include <sstream>
 
 namespace sks {
-
-cv::Mat increment_elements_by_one(cv::Mat matrix)
-{
-  matrix += 1.0;
-  return matrix;
-}
 
 #if (PY_VERSION_HEX >= 0x03000000)
 static void *init_ar() {
@@ -57,13 +52,16 @@ void translate_exception(Exception const& e)
 }
 
 // The name of the module should match that in CMakeLists.txt
-BOOST_PYTHON_MODULE (sksurgeryopencvpython) {
+BOOST_PYTHON_MODULE (sksurgeryopencvcpp) {
   init_ar();
 
   boost::python::to_python_converter<cv::Mat, pbcvt::matToNDArrayBoostConverter>();
   pbcvt::matFromNDArrayBoostConverter();
 
-  boost::python::def("increment_elements_by_one", increment_elements_by_one);
+  boost::python::register_exception_translator<Exception>(&translate_exception);
+
+  boost::python::def("triangulate_points_using_hartley", TriangulatePointsUsingHartley);
+  boost::python::def("triangulate_points_using_midpoint", TriangulatePointsUsingMidpointOfShortestDistance);
 }
 
 }  // end namespace sks

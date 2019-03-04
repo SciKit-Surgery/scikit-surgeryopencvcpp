@@ -18,6 +18,8 @@ set(TMP_DIR ${CMAKE_BINARY_DIR}/Testing/Temporary)
 set(TEST_CASES
   sksBasicTest
   sksCommandLineArgsTest
+  sksMathsTest
+  sksTriangulateTest
 )
 
 foreach(_test_case ${TEST_CASES})
@@ -47,3 +49,5 @@ add_test(1File ${EXECUTABLE_OUTPUT_PATH}/sksCommandLineArgsTest ${DATA_DIR}/inpu
 if (SKSURGERYOPENCVCPP_USE_CUDA)
   add_test(Cuda ${EXECUTABLE_OUTPUT_PATH}/mpCudaTest)
 endif()
+add_test(Maths ${EXECUTABLE_OUTPUT_PATH}/sksMathsTest)
+add_test(Triangulate ${EXECUTABLE_OUTPUT_PATH}/sksTriangulateTest)
