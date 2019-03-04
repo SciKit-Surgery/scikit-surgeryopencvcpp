@@ -13,3 +13,4 @@
 #============================================================================*/
 
 option(BUILD_FLANN "Build FLANN." OFF)
+mark_as_advanced(BUILD_FLANN)

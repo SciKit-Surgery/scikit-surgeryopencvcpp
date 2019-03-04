@@ -12,7 +12,8 @@
 #
 #============================================================================*/
 
-option(BUILD_OpenCV "Build OpenCV." OFF)
+option(BUILD_OpenCV "Build OpenCV." ON)
+mark_as_advanced(BUILD_OpenCV)
 
 if(BUILD_VTK AND APPLE AND BUILD_OpenCV AND "${VTK_VERSION}" STREQUAL "${DEFAULT_VTK_VERSION}")
   set(VTK_VERSION "${FALLBACK_VTK_VERSION}")

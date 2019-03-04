@@ -70,7 +70,7 @@ option(BUILD_SHARED_LIBS "Build Shared Libraries" OFF)
 mark_as_advanced(BUILD_SHARED_LIBS)
 option(BUILD_SUPERBUILD "Build SKSURGERYOPENCVCPP and the projects it depends on via SuperBuild.cmake." ON)
 mark_as_advanced(BUILD_SUPERBUILD)
-option(SKSURGERYOPENCVCPP_USE_OPENMP "Use OpenMP." OFF)
+option(SKSURGERYOPENCVCPP_USE_OPENMP "Use OpenMP." ON)
 mark_as_advanced(SKSURGERYOPENCVCPP_USE_OPENMP)
 option(SKSURGERYOPENCVCPP_USE_CUDA "Use CUDA." OFF)
 mark_as_advanced(SKSURGERYOPENCVCPP_USE_CUDA)
@@ -107,29 +107,29 @@ endif()
 # Also, if you don't want one, you can just search for the package name
 # (e.g. VTK) in this file, and remove all those lines you don't want.
 #######################################################################
-include(sksAddgflags)
-include(sksAddglog)
+#include(sksAddgflags)
+#include(sksAddglog)
 include(sksAddEigen)
-include(sksAddFLANN)
-include(sksAddVTK)
-include(sksAddArrayFire)
+#include(sksAddFLANN)
+#include(sksAddVTK)
+#include(sksAddArrayFire)
 include(sksAddOpenCV)
 include(sksAddBoost)
 include(sksAddPythonBindings)
-include(sksAddPCL)
-include(sksAddUnityWrapper)
+#include(sksAddPCL)
+#include(sksAddUnityWrapper)
 
 
 ######################################################################
 # Add our Gui projects. If you don't want Gui stuff, remove this line.
 ######################################################################
-include(sksAddGuiProjects)
+#include(sksAddGuiProjects)
 
 
 ######################################################################
 # Make sure at this point in this file, VTK is the correct version.
 ######################################################################
-include(sksSetupVTKBackend)
+#include(sksSetupVTKBackend)
 
 
 ##############################################################################
@@ -181,7 +181,7 @@ endif()
 ######################################################################
 # Check for Qt early, as VTK may need it in SuperBuild.
 ######################################################################
-include(sksIncludeQt)
+#include(sksIncludeQt)
 
 
 ######################################################################
@@ -220,9 +220,9 @@ include(sksSetupMSVCRuntime)
 # Try finding CUDA/OpenMP/OpenMPI before SuperBuild, so that variables
 # are more likely to be set consistently throughout all dependencies.
 ######################################################################
-include(sksIncludeCUDA)
+#include(sksIncludeCUDA)
 include(sksIncludeOpenMP)
-include(sksIncludeMPI)
+#include(sksIncludeMPI)
 
 
 ######################################################################
@@ -297,15 +297,15 @@ else()
 endif()
 
 # These are dependent on ordering
-include(sksIncludegflags)
-include(sksIncludeglog)
+#include(sksIncludegflags)
+#include(sksIncludeglog)
 include(sksIncludeEigen)
 include(sksIncludeBoost)
 include(sksIncludePythonBindings)
-include(sksIncludeArrayFire)
+#include(sksIncludeArrayFire)
 include(sksIncludeOpenCV)
-include(sksIncludeVTK)
-include(sksIncludePCL)
+#include(sksIncludeVTK)
+#include(sksIncludePCL)
 
 
 ######################################################################
