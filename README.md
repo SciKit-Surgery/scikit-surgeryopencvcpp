@@ -1,8 +1,9 @@
 scikit-surgeryopencvcpp
 ------------------
 
-[![Build Status](https://travis-ci.com/MattClarkson/scikit-surgeryopencvcpp.svg?branch=master)](https://travis-ci.com/MattClarkson/scikit-surgeryopencvcpp)
-[![Build Status](https://ci.appveyor.com/api/projects/status/5pm89ej732c1ekf0/branch/master)](https://ci.appveyor.com/project/MattClarkson/cmakecatchtemplate)
+[![Build Status](https://travis-ci.com/UCL/scikit-surgeryopencvcpp.svg?branch=master)](https://travis-ci.com/UCL/scikit-surgeryopencvcpp)
+[![Build Status](https://ci.appveyor.com/api/projects/status/jbs1qln3id8ln25o/branch/master?svg=true
+)](https://ci.appveyor.com/project/MattClarkson/scikit-surgeryopencvcpp)
 
 
 Purpose
