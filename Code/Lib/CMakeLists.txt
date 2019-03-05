@@ -18,6 +18,8 @@ set(SKSURGERYOPENCVCPP_LIBRARY_SRCS
   sksBasicTypes.cpp
   sksMyFunctions.cpp
   sksException.cpp
+  sksMaths.cpp
+  sksTriangulate.cpp
 )
 
 set(SKSURGERYOPENCVCPP_LIBRARY_HDRS
