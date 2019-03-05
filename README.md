@@ -1,5 +1,5 @@
-scikit-surgerypclcpp
-====================
+scikit-surgeryopencvcpp
+=======================
 
 [![Build Status](https://travis-ci.com/UCL/scikit-surgeryopencvcpp.svg?branch=master)](https://travis-ci.com/UCL/scikit-surgeryopencvcpp)
 [![Build status](https://ci.appveyor.com/api/projects/status/jbs1qln3id8ln25o/branch/master?svg=true
