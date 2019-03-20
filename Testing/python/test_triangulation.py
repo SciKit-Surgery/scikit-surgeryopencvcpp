@@ -9,16 +9,16 @@ import sksurgeryopencvpython as cvpy
 
 def test_triangulate_points():
 
-    left_intrinsics_file = 'Testing/data/triangulation/left_intrinsic.txt'
+    left_intrinsics_file = 'Testing/Data/triangulation/left_intrinsic.txt'
     left_intrinsics = np.loadtxt(left_intrinsics_file)
 
-    right_intrinsics_file = 'Testing/data/triangulation/right_intrinsic.txt'
+    right_intrinsics_file = 'Testing/Data/triangulation/right_intrinsic.txt'
     right_intrinsics = np.loadtxt(right_intrinsics_file)
 
-    l2r_file = 'Testing/data/triangulation/l2r.txt'
+    l2r_file = 'Testing/Data/triangulation/l2r.txt'
     l2r = np.loadtxt(l2r_file)
 
-    image_points_file = 'Testing/data/triangulation/image_points.txt'
+    image_points_file = 'Testing/Data/triangulation/image_points.txt'
     image_points = np.loadtxt(image_points_file)
 
     rotation_matrix = l2r[0:3, 0:3]
