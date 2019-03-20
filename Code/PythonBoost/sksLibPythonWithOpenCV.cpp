@@ -52,7 +52,7 @@ void translate_exception(Exception const& e)
 }
 
 // The name of the module should match that in CMakeLists.txt
-BOOST_PYTHON_MODULE (sksurgeryopencvcpp) {
+BOOST_PYTHON_MODULE (sksurgeryopencvpython) {
   init_ar();
 
   boost::python::to_python_converter<cv::Mat, pbcvt::matToNDArrayBoostConverter>();

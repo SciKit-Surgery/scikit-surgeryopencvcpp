@@ -4,7 +4,7 @@ import pytest
 import numpy as np
 import datetime
 import six
-import sksurgeryopencvcpp as cvcpp
+import sksurgeryopencvpython as cvpy
 
 
 def test_triangulate_points():
@@ -26,20 +26,20 @@ def test_triangulate_points():
 
     start_hartley = datetime.datetime.now()
 
-    hartley = cvcpp.triangulate_points_using_hartley(image_points,
-                                                     left_intrinsics,
-                                                     right_intrinsics,
-                                                     rotation_matrix,
-                                                     translation_vector
-                                                     )
+    hartley = cvpy.triangulate_points_using_hartley(image_points,
+                                                    left_intrinsics,
+                                                    right_intrinsics,
+                                                    rotation_matrix,
+                                                    translation_vector
+                                                    )
     end_hartley = datetime.datetime.now()
 
-    midpoint = cvcpp.triangulate_points_using_midpoint(image_points,
-                                                       left_intrinsics,
-                                                       right_intrinsics,
-                                                       rotation_matrix,
-                                                       translation_vector
-                                                       )
+    midpoint = cvpy.triangulate_points_using_midpoint(image_points,
+                                                      left_intrinsics,
+                                                      right_intrinsics,
+                                                      rotation_matrix,
+                                                      translation_vector
+                                                      )
 
     end_midpoint = datetime.datetime.now()
 
