@@ -20,7 +20,10 @@ function cmake_build {
   python --version
   mkdir build
   cd build
-  cmake -DSKSURGERYOPENCVCPP_PYTHON_VERSION:STRING=${PYTHON_VERSION} -DBUILD_SUPERBUILD:BOOL=ON -DBUILD_TESTING:BOOL=ON ..
+  if [ -n "$IS_OSX" ]; then
+    extra_flags=" -DCMAKE_CXX_FLAGS=-stdlib=libc++ -DCMAKE_OSX_DEPLOYMENT_TARGET:STRING=10.7 "
+  fi
+  cmake -DSKSURGERYOPENCVCPP_PYTHON_VERSION:STRING=${PYTHON_VERSION} -DBUILD_SUPERBUILD:BOOL=ON -DBUILD_TESTING:BOOL=ON ${extra_flags} ..
   make -j 2
   cd SKSURGERYOPENCVCPP-build
   ctest .

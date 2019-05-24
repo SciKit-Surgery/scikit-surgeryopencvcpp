@@ -4,7 +4,7 @@
 #
 #  Copyright (c) University College London (UCL). All rights reserved.
 #
-#  This software is distributed WITHOUT ANY WARRANTY; without even
+#  This software is distributed WITHOUT STRICT_ANSIANY WARRANTY; without even
 #  the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
 #  PURPOSE.
 #
@@ -24,7 +24,7 @@ if(DEFINED OpenCV_DIR AND NOT EXISTS ${OpenCV_DIR})
   message(FATAL_ERROR "OpenCV_DIR variable is defined but corresponds to non-existing directory")
 endif()
 
-set(version "3.4.5")
+set(version "4.1.0")
 set(location "https://github.com/opencv/opencv.git")
 mpMacroDefineExternalProjectVariables(OpenCV ${version} ${location})
 set(proj_DEPENDENCIES )
@@ -55,15 +55,24 @@ if(NOT DEFINED OpenCV_DIR)
     -DENABLE_PRECOMPILED_HEADERS:BOOL=OFF
     -DOPENCV_PYTHON_SKIP_DETECTION:BOOL=ON
   )
-  if (NOT APPLE)
+  if(WIN32)
     list(APPEND _additional_options
       -DWITH_LAPACK:BOOL=ON
     )
-  else()
+  elseif(APPLE)
     list(APPEND _additional_options
       -DWITH_LAPACK:BOOL=OFF
       -DWITH_IPP:BOOL=OFF
     )
+  else()
+    list(APPEND _additional_options
+      -DWITH_LAPACK:BOOL=ON
+      -DWITH_V4L:BOOL=ON
+      -DWITH_IPP:BOOL=OFF
+    )
+    if(NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
+      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -U__STRICT_ANSI__")
+    endif()
   endif()
 
   if(BUILD_Python_Boost OR BUILD_Python_PyBind)

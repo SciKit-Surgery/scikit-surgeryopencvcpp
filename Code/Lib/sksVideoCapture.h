@@ -34,7 +34,7 @@ namespace sks
 * \class VideoCapture
 * \brief Wrapper class around OpenCV VideoCapture.
 */
-class VideoCapture {
+class SKSURGERYOPENCVCPP_WINEXPORT VideoCapture {
 
 public:
   VideoCapture(unsigned int channel);

@@ -36,7 +36,7 @@ if(NOT BUILDING_GUIS)
     message("Found NumPy_INCLUDE_DIR=${NumPy_INCLUDE_DIR}, NumPy_VERSION=${NumPy_VERSION}")
     include_directories(${NumPy_INCLUDE_DIR})
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/pyboostcvconverter/include)
-    list(APPEND SKSURGERYOPENCVCPP_PYTHON_SRCS pyboostcvconverter/src/pyboost_cv3_converter.cpp)
+    list(APPEND SKSURGERYOPENCVCPP_PYTHON_SRCS pyboostcvconverter/src/pyboost_cv4_converter.cpp)
   else()
     list(APPEND SKSURGERYOPENCVCPP_PYTHON_SRCS sksLibPython.cpp) # Rename as appropriate.
   endif()
