@@ -22,10 +22,13 @@
 
 #include "sksTriangulate.h"
 #include "sksException.h"
+#include "sksVideoCapture.h"
 
 #include <boost/python.hpp>
 #include <boost/python/exception_translator.hpp>
 #include <pyboostcvconverter/pyboostcvconverter.hpp>
+
+using namespace boost::python;
 
 #include <ostream>
 #include <sstream>
@@ -62,6 +65,10 @@ BOOST_PYTHON_MODULE (sksurgeryopencvpython) {
 
   boost::python::def("triangulate_points_using_hartley", TriangulatePointsUsingHartley);
   boost::python::def("triangulate_points_using_midpoint", TriangulatePointsUsingMidpointOfShortestDistance);
+
+  class_<VideoCapture>("VideoCapture", init<int, int, int>())
+    .def("read", &VideoCapture::read)
+  ;
 }
 
 }  // end namespace sks
