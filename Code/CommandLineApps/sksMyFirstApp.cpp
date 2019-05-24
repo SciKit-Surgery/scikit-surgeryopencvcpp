@@ -29,7 +29,7 @@ int main(int argc, char** argv)
 
   try
   {
-    sks::VideoCapture vc;
+    sks::VideoCapture vc(0);
     cv::Mat image = vc.read();
     cv::imwrite("tmp.png", image);
 

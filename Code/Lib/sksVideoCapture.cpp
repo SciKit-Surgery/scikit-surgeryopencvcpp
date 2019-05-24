@@ -21,14 +21,15 @@ namespace sks
 {
 
 //-----------------------------------------------------------------------------
-VideoCapture::VideoCapture()
+VideoCapture::VideoCapture(unsigned int channel)
 {
   try
   {
-    m_VideoCapture = cv::VideoCapture(0);
+    m_VideoCapture = cv::VideoCapture(channel);
     if (!m_VideoCapture.isOpened())
     {
-      sksExceptionThrow() << "sks::VideoCapture() did not open";
+      sksExceptionThrow() << "sks::VideoCapture("
+        << channel << ") did not open.";
     }
   } catch (std::exception& e)
   {
@@ -60,7 +61,7 @@ VideoCapture::VideoCapture(unsigned int channel,
     {
       sksExceptionThrow() << "sks::VideoCapture("
        << channel << ", " << width << ", " << height
-       << ") did not open";
+       << ") did not open.";
     }
   } catch (std::exception& e)
   {

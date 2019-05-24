@@ -67,6 +67,7 @@ BOOST_PYTHON_MODULE (sksurgeryopencvpython) {
   boost::python::def("triangulate_points_using_midpoint", TriangulatePointsUsingMidpointOfShortestDistance);
 
   class_<VideoCapture>("VideoCapture", init<int, int, int>())
+    .def(init<int>())
     .def("read", &VideoCapture::read)
   ;
 }
