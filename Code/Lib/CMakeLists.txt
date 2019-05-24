@@ -20,6 +20,7 @@ set(SKSURGERYOPENCVCPP_LIBRARY_SRCS
   sksException.cpp
   sksMaths.cpp
   sksTriangulate.cpp
+  sksVideoCapture.cpp
 )
 
 set(SKSURGERYOPENCVCPP_LIBRARY_HDRS

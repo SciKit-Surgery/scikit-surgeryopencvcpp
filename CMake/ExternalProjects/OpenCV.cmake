@@ -80,7 +80,7 @@ if(NOT DEFINED OpenCV_DIR)
       -DBUILD_opencv_flann:BOOL=ON
       -DBUILD_opencv_gapi:BOOL=OFF
       -DBUILD_opencv_highgui:BOOL=OFF
-      -DBUILD_opencv_imgcodecs:BOOL=OFF
+      -DBUILD_opencv_imgcodecs:BOOL=ON
       -DBUILD_opencv_java_bindings_generator:BOOL=OFF
       -DBUILD_opencv_js:BOOL=OFF
       -DBUILD_opencv_ml:BOOL=OFF
@@ -91,7 +91,7 @@ if(NOT DEFINED OpenCV_DIR)
       -DBUILD_opencv_stitching:BOOL=OFF
       -DBUILD_opencv_ts:BOOL=OFF
       -DBUILD_opencv_video:BOOL=OFF
-      -DBUILD_opencv_videoio:BOOL=OFF
+      -DBUILD_opencv_videoio:BOOL=ON
       -DBUILD_opencv_world:BOOL=OFF
     )
   else()
