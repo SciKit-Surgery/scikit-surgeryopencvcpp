@@ -15,8 +15,27 @@
 #include "sksVideoCapture.h"
 #include "sksExceptionMacro.h"
 
+#include <iostream>
+
 namespace sks
 {
+
+//-----------------------------------------------------------------------------
+VideoCapture::VideoCapture()
+{
+  try
+  {
+    m_VideoCapture = cv::VideoCapture(0);
+    if (!m_VideoCapture.isOpened())
+    {
+      sksExceptionThrow() << "sks::VideoCapture() did not open";
+    }
+  } catch (std::exception& e)
+  {
+    sksExceptionThrow() << "Caught OpenCV error:" << e.what();
+  }
+
+}
 
 //-----------------------------------------------------------------------------
 VideoCapture::VideoCapture(unsigned int channel,
@@ -37,7 +56,12 @@ VideoCapture::VideoCapture(unsigned int channel,
     m_VideoCapture.set(cv::CAP_PROP_FRAME_WIDTH, width);
     m_VideoCapture.set(cv::CAP_PROP_FRAME_HEIGHT, height);
     m_VideoCapture.open(channel);
-
+    if (!m_VideoCapture.isOpened())
+    {
+      sksExceptionThrow() << "sks::VideoCapture("
+       << channel << ", " << width << ", " << height
+       << ") did not open";
+    }
   } catch (std::exception& e)
   {
     sksExceptionThrow() << "Caught OpenCV error:" << e.what();

@@ -79,7 +79,7 @@ if(NOT DEFINED OpenCV_DIR)
       -DBUILD_opencv_features2d:BOOL=ON
       -DBUILD_opencv_flann:BOOL=ON
       -DBUILD_opencv_gapi:BOOL=OFF
-      -DBUILD_opencv_highgui:BOOL=OFF
+      -DBUILD_opencv_highgui:BOOL=ON
       -DBUILD_opencv_imgcodecs:BOOL=ON
       -DBUILD_opencv_java_bindings_generator:BOOL=OFF
       -DBUILD_opencv_js:BOOL=OFF

@@ -37,6 +37,7 @@ namespace sks
 class VideoCapture {
 
 public:
+  VideoCapture();
   VideoCapture(unsigned int channel, unsigned int width, unsigned int height);
   cv::Mat read();
 
