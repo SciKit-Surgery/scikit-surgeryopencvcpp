@@ -4,7 +4,7 @@
 #
 #  Copyright (c) University College London (UCL). All rights reserved.
 #
-#  This software is distributed WITHOUT STRICT_ANSIANY WARRANTY; without even
+#  This software is distributed WITHOUT ANY WARRANTY; without even
 #  the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
 #  PURPOSE.
 #
