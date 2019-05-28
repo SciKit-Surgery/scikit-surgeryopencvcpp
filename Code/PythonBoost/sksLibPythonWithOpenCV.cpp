@@ -69,6 +69,7 @@ BOOST_PYTHON_MODULE (sksurgeryopencvpython) {
   class_<VideoCapture>("VideoCapture", init<int, int, int>())
     .def(init<int>())
     .def("read", &VideoCapture::read)
+    .def("isOpened", &VideoCapture::isOpened)
   ;
 }
 

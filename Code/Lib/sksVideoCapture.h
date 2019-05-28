@@ -40,6 +40,7 @@ public:
   VideoCapture(unsigned int channel);
   VideoCapture(unsigned int channel, unsigned int width, unsigned int height);
   cv::Mat read();
+  bool isOpened();
 
 private:
   cv::VideoCapture m_VideoCapture;

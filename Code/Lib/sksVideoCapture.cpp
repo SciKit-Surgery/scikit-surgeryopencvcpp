@@ -23,19 +23,12 @@ namespace sks
 //-----------------------------------------------------------------------------
 VideoCapture::VideoCapture(unsigned int channel)
 {
-  try
+  m_VideoCapture = cv::VideoCapture(channel);
+  if (!m_VideoCapture.isOpened())
   {
-    m_VideoCapture = cv::VideoCapture(channel);
-    if (!m_VideoCapture.isOpened())
-    {
-      sksExceptionThrow() << "sks::VideoCapture("
-        << channel << ") did not open.";
-    }
-  } catch (std::exception& e)
-  {
-    sksExceptionThrow() << "Caught OpenCV error:" << e.what();
+    sksExceptionThrow() << "sks::VideoCapture("
+      << channel << ") did not open.";
   }
-
 }
 
 //-----------------------------------------------------------------------------
@@ -51,21 +44,15 @@ VideoCapture::VideoCapture(unsigned int channel,
   {
     sksExceptionThrow() << "height must be positive";
   }
-  try
+  m_VideoCapture = cv::VideoCapture();
+  m_VideoCapture.set(cv::CAP_PROP_FRAME_WIDTH, width);
+  m_VideoCapture.set(cv::CAP_PROP_FRAME_HEIGHT, height);
+  m_VideoCapture.open(channel);
+  if (!m_VideoCapture.isOpened())
   {
-    m_VideoCapture = cv::VideoCapture();
-    m_VideoCapture.set(cv::CAP_PROP_FRAME_WIDTH, width);
-    m_VideoCapture.set(cv::CAP_PROP_FRAME_HEIGHT, height);
-    m_VideoCapture.open(channel);
-    if (!m_VideoCapture.isOpened())
-    {
-      sksExceptionThrow() << "sks::VideoCapture("
-       << channel << ", " << width << ", " << height
-       << ") did not open.";
-    }
-  } catch (std::exception& e)
-  {
-    sksExceptionThrow() << "Caught OpenCV error:" << e.what();
+    sksExceptionThrow() << "sks::VideoCapture("
+     << channel << ", " << width << ", " << height
+     << ") did not open.";
   }
 }
 
@@ -86,6 +73,13 @@ cv::Mat VideoCapture::read()
   }
 
   return output;
+}
+
+
+//-----------------------------------------------------------------------------
+bool VideoCapture::isOpened()
+{
+  return m_VideoCapture.isOpened();
 }
 
 } // end namespace
