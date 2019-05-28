@@ -39,6 +39,7 @@ class SKSURGERYOPENCVCPP_WINEXPORT VideoCapture {
 public:
   VideoCapture(unsigned int channel);
   VideoCapture(unsigned int channel, unsigned int width, unsigned int height);
+  VideoCapture(std::string);
   cv::Mat read();
   bool isOpened();
 

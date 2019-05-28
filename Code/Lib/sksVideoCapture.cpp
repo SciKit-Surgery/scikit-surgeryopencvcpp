@@ -58,6 +58,18 @@ VideoCapture::VideoCapture(unsigned int channel,
 
 
 //-----------------------------------------------------------------------------
+VideoCapture::VideoCapture(std::string fileName)
+{
+  m_VideoCapture = cv::VideoCapture(fileName);
+  if (!m_VideoCapture.isOpened())
+  {
+    sksExceptionThrow() << "sks::VideoCapture("
+      << fileName << ") did not open.";
+  }
+}
+
+
+//-----------------------------------------------------------------------------
 cv::Mat VideoCapture::read()
 {
   if (!m_VideoCapture.isOpened())
