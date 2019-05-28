@@ -80,6 +80,12 @@ set(SKSURGERYOPENCVCPP_CUDA_ARCH_BIN "" CACHE STRING "CUDA compute capability to
 mark_as_advanced(SKSURGERYOPENCVCPP_CUDA_ARCH_BIN)
 option(SKSURGERYOPENCVCPP_USE_MPI "Use MPI." OFF)
 mark_as_advanced(SKSURGERYOPENCVCPP_USE_MPI)
+if(UNIX AND NOT APPLE)
+  option(SKSURGERYOPENCVCPP_USE_V4L "Use V4L." OFF)
+  mark_as_advanced(SKSURGERYOPENCVCPP_USE_V4L)
+  option(SKSURGERYOPENCVCPP_USE_GSTREAMER "Use gstreamer." OFF)
+  mark_as_advanced(SKSURGERYOPENCVCPP_USE_GSTREAMER)
+endif()
 
 
 ######################################################################

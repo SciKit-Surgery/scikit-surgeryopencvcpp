@@ -24,7 +24,7 @@ if(DEFINED OpenCV_DIR AND NOT EXISTS ${OpenCV_DIR})
   message(FATAL_ERROR "OpenCV_DIR variable is defined but corresponds to non-existing directory")
 endif()
 
-set(version "3.4.5")
+set(version "4.1.0")
 set(location "https://github.com/opencv/opencv.git")
 mpMacroDefineExternalProjectVariables(OpenCV ${version} ${location})
 set(proj_DEPENDENCIES )
@@ -55,15 +55,25 @@ if(NOT DEFINED OpenCV_DIR)
     -DENABLE_PRECOMPILED_HEADERS:BOOL=OFF
     -DOPENCV_PYTHON_SKIP_DETECTION:BOOL=ON
   )
-  if (NOT APPLE)
+  if(WIN32)
     list(APPEND _additional_options
       -DWITH_LAPACK:BOOL=ON
     )
-  else()
+  elseif(APPLE)
     list(APPEND _additional_options
       -DWITH_LAPACK:BOOL=OFF
       -DWITH_IPP:BOOL=OFF
     )
+  else()
+    list(APPEND _additional_options
+      -DWITH_LAPACK:BOOL=ON
+      -DWITH_IPP:BOOL=OFF
+      -DWITH_V4L:BOOL=${SKSURGERYOPENCVCPP_USE_V4L}
+      -DWITH_GSTREAMER:BOOL=${SKSURGERYOPENCVCPP_USE_GSTREAMER}
+    )
+    if(NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
+      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -U__STRICT_ANSI__")
+    endif()
   endif()
 
   if(BUILD_Python_Boost OR BUILD_Python_PyBind)
@@ -79,8 +89,8 @@ if(NOT DEFINED OpenCV_DIR)
       -DBUILD_opencv_features2d:BOOL=ON
       -DBUILD_opencv_flann:BOOL=ON
       -DBUILD_opencv_gapi:BOOL=OFF
-      -DBUILD_opencv_highgui:BOOL=OFF
-      -DBUILD_opencv_imgcodecs:BOOL=OFF
+      -DBUILD_opencv_highgui:BOOL=ON
+      -DBUILD_opencv_imgcodecs:BOOL=ON
       -DBUILD_opencv_java_bindings_generator:BOOL=OFF
       -DBUILD_opencv_js:BOOL=OFF
       -DBUILD_opencv_ml:BOOL=OFF
@@ -91,7 +101,7 @@ if(NOT DEFINED OpenCV_DIR)
       -DBUILD_opencv_stitching:BOOL=OFF
       -DBUILD_opencv_ts:BOOL=OFF
       -DBUILD_opencv_video:BOOL=OFF
-      -DBUILD_opencv_videoio:BOOL=OFF
+      -DBUILD_opencv_videoio:BOOL=ON
       -DBUILD_opencv_world:BOOL=OFF
     )
   else()
