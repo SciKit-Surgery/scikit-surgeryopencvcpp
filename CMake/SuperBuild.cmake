@@ -165,7 +165,7 @@ include(sksExternalProjectHelperMacros)
 ######################################################################
 # External projects
 ######################################################################
-foreach(p gflags glog Eigen Boost VTK OpenCV FLANN PCL ArrayFire)
+foreach(p gflags glog Eigen Boost VTK OpenCVContrib OpenCV FLANN PCL ArrayFire)
   include("CMake/ExternalProjects/${p}.cmake")
 endforeach()
 
@@ -184,7 +184,7 @@ if(NOT DEFINED SUPERBUILD_EXCLUDE_SKSURGERYOPENCVCPPBUILD_TARGET OR NOT SUPERBUI
   endif()
 
   set(proj SKSURGERYOPENCVCPP)
-  set(proj_DEPENDENCIES ${OpenCV_DEPENDS} ${Eigen_DEPENDS} ${Boost_DEPENDS} ${gflags_DEPENDS} ${glog_DEPENDS} ${VTK_DEPENDS} ${FLANN_DEPENDS} ${PCL_DEPENDS} ${ArrayFire_DEPENDS})
+  set(proj_DEPENDENCIES ${OpenCVContrib_DEPENDS} ${OpenCV_DEPENDS} ${Eigen_DEPENDS} ${Boost_DEPENDS} ${gflags_DEPENDS} ${glog_DEPENDS} ${VTK_DEPENDS} ${FLANN_DEPENDS} ${PCL_DEPENDS} ${ArrayFire_DEPENDS})
 
   ExternalProject_Add(${proj}
     LIST_SEPARATOR ^^
