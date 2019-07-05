@@ -14,6 +14,7 @@
 
 #include "sksTriangulate.h"
 #include "sksMaths.h"
+#include "sksValidate.h"
 #include "sksExceptionMacro.h"
 
 #ifdef _OPENMP
@@ -34,51 +35,18 @@ void ValidateTriangulationInput(
   const cv::Mat& leftToRightRotationMatrix,
   const cv::Mat& leftToRightTranslationVector)
 {
+  sks::ValidateStereoParameters(
+    leftCameraIntrinsicParams,
+    rightCameraIntrinsicParams,
+    leftToRightRotationMatrix,
+    leftToRightTranslationVector
+  );
+
   int numberOfPoints = inputUndistortedPoints.rows;
 
   if (numberOfPoints < 1)
   {
     sksExceptionThrow() << "No points to triangulate!";
-  }
-
-  if (leftCameraIntrinsicParams.rows != 3)
-  {
-    sksExceptionThrow() << "Left camera matrix does not have 3 rows!";
-  }
-
-  if (leftCameraIntrinsicParams.cols != 3)
-  {
-    sksExceptionThrow() << "Left camera matrix does not have 3 columns!";
-  }
-
-  if (rightCameraIntrinsicParams.rows != 3)
-  {
-    sksExceptionThrow() << "Right camera matrix does not have 3 rows!";
-  }
-
-  if (rightCameraIntrinsicParams.cols != 3)
-  {
-    sksExceptionThrow() << "Right camera matrix does not have 3 columns!";
-  }
-
-  if (leftToRightRotationMatrix.rows != 3)
-  {
-    sksExceptionThrow() << "Left to right rotation matrix does not have 3 rows!";
-  }
-
-  if (leftToRightRotationMatrix.cols != 3)
-  {
-    sksExceptionThrow() << "Left to right rotation matrix does not have 3 columns!";
-  }
-
-  if (leftToRightTranslationVector.rows != 3)
-  {
-    sksExceptionThrow() << "Left to right translation vector does not have 3 rows!";
-  }
-
-  if (leftToRightTranslationVector.cols != 1)
-  {
-    sksExceptionThrow() << "Left to right translation vector does not have 1 column!";
   }
 }
 

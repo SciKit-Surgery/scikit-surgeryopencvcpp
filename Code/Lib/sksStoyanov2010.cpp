@@ -14,6 +14,7 @@
 
 #include "sksStoyanov2010.h"
 #include "sksTriangulate.h"
+#include "sksValidate.h"
 
 #include <opencv2/stereo.hpp>
 
@@ -21,11 +22,19 @@ namespace sks
 {
 
 //------------------------------------------------------------------------------
+void ValidateImages(const cv::Mat& leftImage, const cv::Mat& rightImage)
+{
+}
+
+
+//------------------------------------------------------------------------------
 cv::Mat GetDisparityMap(
   const cv::Mat& leftImage,
   const cv::Mat& rightImage
   )
 {
+  sks::ValidateImages(leftImage, rightImage);
+
   cv::Size frameSize = leftImage.size();
 
   cv::Ptr<cv::stereo::QuasiDenseStereo> stereo = cv::stereo::QuasiDenseStereo::create(frameSize);
@@ -46,6 +55,15 @@ cv::Mat GetStereoReconstruction(
   const cv::Mat& leftToRightTranslationVector
   )
 {
+  sks::ValidateImages(leftImage, rightImage);
+
+  sks::ValidateStereoParameters(
+    leftCameraMatrix,
+    rightCameraMatrix,
+    leftToRightRotationMatrix,
+    leftToRightTranslationVector
+  );
+
   cv::Size frameSize = leftImage.size();
 
   cv::Ptr<cv::stereo::QuasiDenseStereo> stereo = cv::stereo::QuasiDenseStereo::create(frameSize);

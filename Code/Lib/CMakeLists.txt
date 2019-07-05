@@ -19,6 +19,7 @@ set(SKSURGERYOPENCVCPP_LIBRARY_SRCS
   sksMyFunctions.cpp
   sksException.cpp
   sksMaths.cpp
+  sksValidate.cpp
   sksTriangulate.cpp
   sksVideoCapture.cpp
   sksStoyanov2010.cpp
