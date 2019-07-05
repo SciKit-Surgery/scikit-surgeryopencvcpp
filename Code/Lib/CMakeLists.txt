@@ -21,6 +21,7 @@ set(SKSURGERYOPENCVCPP_LIBRARY_SRCS
   sksMaths.cpp
   sksTriangulate.cpp
   sksVideoCapture.cpp
+  sksStoyanov2010.cpp
 )
 
 set(SKSURGERYOPENCVCPP_LIBRARY_HDRS
