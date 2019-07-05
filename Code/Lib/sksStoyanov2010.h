@@ -43,9 +43,12 @@ extern "C++" SKSURGERYOPENCVCPP_WINEXPORT cv::Mat GetDisparityMap(
 */
 extern "C++" SKSURGERYOPENCVCPP_WINEXPORT cv::Mat GetStereoReconstruction(
   const cv::Mat& leftImage,
-  const cv::Mat& leftIntrinsics,
+  const cv::Mat& leftCameraMatrix,
   const cv::Mat& rightImage,
-  const cv::Mat& rightIntrinsics
+  const cv::Mat& rightIntrinsics,
+  const cv::Mat& rightCameraMatrix,
+  const cv::Mat& leftToRightRotationMatrix,
+  const cv::Mat& leftToRightTranslationVector
   );
 
 } // end namespace

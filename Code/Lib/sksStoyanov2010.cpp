@@ -13,6 +13,9 @@
 =============================================================================*/
 
 #include "sksStoyanov2010.h"
+#include "sksTriangulate.h"
+
+#include <opencv2/stereo.hpp>
 
 namespace sks
 {
@@ -23,7 +26,12 @@ cv::Mat GetDisparityMap(
   const cv::Mat& rightImage
   )
 {
-  cv::Mat outputImage = cv::Mat(1, 1, CV_8UC1);
+  cv::Size frameSize = leftImage.size();
+
+  cv::Ptr<cv::stereo::QuasiDenseStereo> stereo = cv::stereo::QuasiDenseStereo::create(frameSize);
+  stereo->process(leftImage, rightImage);
+
+  cv::Mat outputImage = stereo->getDisparity(80);
   return outputImage;
 }
 
@@ -31,12 +39,36 @@ cv::Mat GetDisparityMap(
 //------------------------------------------------------------------------------
 cv::Mat GetStereoReconstruction(
   const cv::Mat& leftImage,
-  const cv::Mat& leftIntrinsics,
+  const cv::Mat& leftCameraMatrix,
   const cv::Mat& rightImage,
-  const cv::Mat& rightIntrinsics
+  const cv::Mat& rightCameraMatrix,
+  const cv::Mat& leftToRightRotationMatrix,
+  const cv::Mat& leftToRightTranslationVector
   )
 {
-  cv::Mat outputPoints = cv::Mat(1, 3, CV_64FC1);
+  cv::Size frameSize = leftImage.size();
+
+  cv::Ptr<cv::stereo::QuasiDenseStereo> stereo = cv::stereo::QuasiDenseStereo::create(frameSize);
+  stereo->process(leftImage, rightImage);
+
+  std::vector<cv::stereo::Match> matches;
+  stereo->getDenseMatches(matches);
+
+  cv::Mat matchedPoints = cv::Mat(matches.size(), 4, CV_64FC1);
+  for (std::vector<cv::stereo::Match>::size_type i=0; i < matches.size(); i++)
+  {
+    matchedPoints.at<double>(i, 0) = matches[i].p0.x;
+    matchedPoints.at<double>(i, 1) = matches[i].p0.y;
+    matchedPoints.at<double>(i, 2) = matches[i].p1.x;
+    matchedPoints.at<double>(i, 3) = matches[i].p1.y;
+  }
+
+  cv::Mat outputPoints = sks::TriangulatePointsUsingHartley(matchedPoints,
+                                                            leftCameraMatrix,
+                                                            rightCameraMatrix,
+                                                            leftToRightRotationMatrix,
+                                                            leftToRightTranslationVector
+                                                           );
   return outputPoints;
 }
 
