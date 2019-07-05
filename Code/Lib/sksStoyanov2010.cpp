@@ -14,6 +14,7 @@
 
 #include "sksStoyanov2010.h"
 #include "sksTriangulate.h"
+#include "sksExceptionMacro.h"
 #include "sksValidate.h"
 
 #include <opencv2/stereo.hpp>
@@ -24,6 +25,14 @@ namespace sks
 //------------------------------------------------------------------------------
 void ValidateImages(const cv::Mat& leftImage, const cv::Mat& rightImage)
 {
+  cv::Size leftSize = leftImage.size();
+  cv::Size rightSize = rightImage.size();
+
+  if (leftSize != rightSize)
+  {
+    sksExceptionThrow() << "Left size:" << leftSize
+      << " is not equal to right size:" << rightSize;
+  }
 }
 
 
