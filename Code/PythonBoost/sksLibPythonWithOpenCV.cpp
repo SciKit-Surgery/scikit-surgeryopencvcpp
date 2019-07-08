@@ -21,6 +21,7 @@
 #define PY_ARRAY_UNIQUE_SYMBOL pbcvt_ARRAY_API
 
 #include "sksTriangulate.h"
+#include "sksStoyanov2010.h"
 #include "sksException.h"
 #include "sksVideoCapture.h"
 
@@ -65,6 +66,7 @@ BOOST_PYTHON_MODULE (sksurgeryopencvpython) {
 
   boost::python::def("triangulate_points_using_hartley", TriangulatePointsUsingHartley);
   boost::python::def("triangulate_points_using_midpoint", TriangulatePointsUsingMidpointOfShortestDistance);
+  boost::python::def("reconstruct_points_using_stoyanov_2010", GetStereoReconstruction);
 
   class_<VideoCapture>("VideoCapture", init<int, int, int>())
     .def(init<int>())
