@@ -18,6 +18,8 @@
 #include "sksValidate.h"
 
 #include <opencv2/stereo.hpp>
+#include <chrono>
+#include <iostream>
 
 namespace sks
 {
@@ -75,11 +77,17 @@ cv::Mat GetStereoReconstruction(
 
   cv::Size frameSize = leftImage.size();
 
+  auto beforeQDS = std::chrono::high_resolution_clock::now();
+
   cv::Ptr<cv::stereo::QuasiDenseStereo> stereo = cv::stereo::QuasiDenseStereo::create(frameSize);
   stereo->process(leftImage, rightImage);
 
+  auto afterQDS = std::chrono::high_resolution_clock::now();
+
   std::vector<cv::stereo::Match> matches;
   stereo->getDenseMatches(matches);
+
+  auto afterRetrieveMatches = std::chrono::high_resolution_clock::now();
 
   cv::Mat matchedPoints = cv::Mat(matches.size(), 4, CV_64FC1);
   for (std::vector<cv::stereo::Match>::size_type i=0; i < matches.size(); i++)
@@ -90,12 +98,24 @@ cv::Mat GetStereoReconstruction(
     matchedPoints.at<double>(i, 3) = matches[i].p1.y;
   }
 
+  auto afterCopyingToCVMat = std::chrono::high_resolution_clock::now();
+
   cv::Mat outputPoints = sks::TriangulatePointsUsingHartley(matchedPoints,
                                                             leftCameraMatrix,
                                                             rightCameraMatrix,
                                                             leftToRightRotationMatrix,
                                                             leftToRightTranslationVector
                                                            );
+
+  auto afterTriangulation = std::chrono::high_resolution_clock::now();
+
+  std::cerr << "sks::GetStereoReconstruction:"
+    << std::chrono::duration_cast<std::chrono::milliseconds>(afterQDS - beforeQDS).count() << ":"
+    << std::chrono::duration_cast<std::chrono::milliseconds>(afterRetrieveMatches - afterQDS).count() << ":"
+    << std::chrono::duration_cast<std::chrono::milliseconds>(afterCopyingToCVMat - afterRetrieveMatches).count() << ":"
+    << std::chrono::duration_cast<std::chrono::milliseconds>(afterTriangulation - afterCopyingToCVMat).count()
+    << std::endl;
+
   return outputPoints;
 }
 

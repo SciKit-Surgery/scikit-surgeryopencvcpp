@@ -20,6 +20,7 @@ set(TEST_CASES
   sksCommandLineArgsTest
   sksMathsTest
   sksTriangulateTest
+  sksStoyanov2010Test
 )
 
 foreach(_test_case ${TEST_CASES})
@@ -51,3 +52,4 @@ if (SKSURGERYOPENCVCPP_USE_CUDA)
 endif()
 add_test(Maths ${EXECUTABLE_OUTPUT_PATH}/sksMathsTest)
 add_test(Triangulate ${EXECUTABLE_OUTPUT_PATH}/sksTriangulateTest)
+add_test(SurfaceReconstruction ${EXECUTABLE_OUTPUT_PATH}/sksStoyanov2010Test ${DATA_DIR}/calibration/left-1095-undistorted.png ${DATA_DIR}/calibration/right-1095-undistorted.png)

@@ -31,6 +31,8 @@ namespace sks
 
 /**
 * \brief Gets a disparity map image.
+*
+* Not sure the underlying library in OpenCV is ready yet.
 */
 extern "C++" SKSURGERYOPENCVCPP_WINEXPORT cv::Mat GetDisparityMap(
   const cv::Mat& leftImage,
@@ -45,7 +47,6 @@ extern "C++" SKSURGERYOPENCVCPP_WINEXPORT cv::Mat GetStereoReconstruction(
   const cv::Mat& leftImage,
   const cv::Mat& leftCameraMatrix,
   const cv::Mat& rightImage,
-  const cv::Mat& rightIntrinsics,
   const cv::Mat& rightCameraMatrix,
   const cv::Mat& leftToRightRotationMatrix,
   const cv::Mat& leftToRightTranslationVector
