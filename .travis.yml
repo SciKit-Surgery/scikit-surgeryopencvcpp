@@ -49,7 +49,7 @@ env:
     - REPO_DIR=.
     - BUILD_COMMIT=HEAD
     - BUILD_DEPENDS="numpy six wheel"
-    - TEST_DEPENDS="numpy six pytest"
+    - TEST_DEPENDS="numpy six pytest opencv-python"
     - BDIST_PARAMS=""
     - PLAT=x86_64
     - UNICODE_WIDTH=32
