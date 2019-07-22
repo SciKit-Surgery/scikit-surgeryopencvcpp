@@ -78,6 +78,8 @@ before_build:
     if ($LastExitCode -ne 0) {throw $LastExitCode}
     &"${Env:MB_PYTHON}/python.exe" -m pip install --upgrade numpy
     if ($LastExitCode -ne 0) {throw $LastExitCode}
+    &"${Env:MB_PYTHON}/python.exe" -m pip install --upgrade opencv-python
+    if ($LastExitCode -ne 0) {throw $LastExitCode}
     &"${Env:MB_PYTHON}/python.exe" -m pip install --upgrade --no-warn-script-location wheel
     if ($LastExitCode -ne 0) {throw $LastExitCode}
 
