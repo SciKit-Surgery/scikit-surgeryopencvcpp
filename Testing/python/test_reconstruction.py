@@ -37,10 +37,10 @@ def test_reconstruction():
                                                          )
 
     end_stoyanov_midpoint = datetime.datetime.now()
+    number_of_points = points.shape[0]
 
     six.print_('Stoyanov 2010, using midpoint triangulation, in python=:'
                + str((end_stoyanov_midpoint - start_stoyanov_midpoint).total_seconds()))
-    assert points.shape[0] == 237864
     assert points.shape[1] == 7
 
     start_stoyanov_hartley = datetime.datetime.now()
@@ -58,5 +58,5 @@ def test_reconstruction():
 
     six.print_('Stoyanov 2010, using Hartley triangulation, in python=:'
                + str((end_stoyanov_hartley - start_stoyanov_hartley).total_seconds()))
-    assert points.shape[0] == 237864
+    assert points.shape[0] == number_of_points # can only check for consistency.
     assert points.shape[1] == 7

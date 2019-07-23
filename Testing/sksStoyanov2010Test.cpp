@@ -73,5 +73,5 @@ TEST_CASE( "Reconstruct chessboard.", "[Reconstruction Tests]" ) {
   std::cout << "Number of points reconstructed = " <<  numberOfPoints << std::endl;
 
   REQUIRE(pointsIn3D.cols == 7);
-  REQUIRE(numberOfPoints == 237864);
+  // REQUIRE(numberOfPoints == 237864); Don't do this, number changes on each platform - rounding errors etc.
 }
