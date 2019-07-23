@@ -10,20 +10,21 @@ import cv2
 
 def test_reconstruction():
 
-    left_intrinsics_file = 'Testing/Data/calibration/calib.left.intrinsic.txt'
+    # Example from 2nd silicon heart phantom dataset from Hamlyn. http://hamlyn.doc.ic.ac.uk/vision/.
+    left_intrinsics_file = 'Testing/Data/reconstruction/calib.left.intrinsic.txt'
     left_intrinsics = np.loadtxt(left_intrinsics_file)
 
-    right_intrinsics_file = 'Testing/Data/calibration/calib.right.intrinsic.txt'
+    right_intrinsics_file = 'Testing/Data/reconstruction/calib.right.intrinsic.txt'
     right_intrinsics = np.loadtxt(right_intrinsics_file)
 
-    l2r_file = 'Testing/Data/calibration/calib.l2r.4x4'
+    l2r_file = 'Testing/Data/reconstruction/calib.l2r.4x4'
     l2r = np.loadtxt(l2r_file)
 
     rotation_matrix = l2r[0:3, 0:3]
     translation_vector = l2r[0:3, 3:4]
 
-    left_image = cv2.imread('Testing/Data/calibration/left-1095-undistorted.png')
-    right_image = cv2.imread('Testing/Data/calibration/right-1095-undistorted.png')
+    left_image = cv2.imread('Testing/Data/reconstruction/f7_dynamic_deint_L_0100.png')
+    right_image = cv2.imread('Testing/Data/reconstruction/f7_dynamic_deint_R_0100.png')
 
     start_stoyanov_midpoint = datetime.datetime.now()
 
