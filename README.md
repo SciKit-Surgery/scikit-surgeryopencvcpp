@@ -1,5 +1,4 @@
-scikit-surgeryopencvcpp
-=======================
+# scikit-surgeryopencvcpp
 
 [![Build Status](https://travis-ci.com/UCL/scikit-surgeryopencvcpp.svg?branch=master)](https://travis-ci.com/UCL/scikit-surgeryopencvcpp)
 [![Build status](https://ci.appveyor.com/api/projects/status/jbs1qln3id8ln25o/branch/master?svg=true
@@ -14,15 +13,13 @@ developed at the [Wellcome EPSRC Centre for Interventional and Surgical Sciences
 part of [University College London (UCL)](http://www.ucl.ac.uk/).
 
 
-Features
---------
+# Features
 
 * Support for Python Wheels, thanks to [Matthew Brett's multibuild](https://github.com/matthew-brett/multibuild).
 * Triangulation using [Hartley and Zisserman's method](http://www.morethantechnical.com/2012/01/04/simple-triangulation-with-opencv-from-harley-zisserman-w-code), and the [midpoint of two lines](http://geomalgorithms.com/a07-_distance.html).
 * Surface reconstruction, using [Dan Stoyanov's](https://iris.ucl.ac.uk/iris/browse/profile?upi=DSTOY26) [MICCAI 2010 method](https://link.springer.com/chapter/10.1007/978-3-642-15705-9_34), implemented in [OpenCV](http://www.opencv.org) by [Dimitris Psychogyios](https://github.com/dimitrisPs).
 
-Installing
-----------
+# Installing
 
 You can pip install the latest Python package as follows:
 
@@ -30,11 +27,31 @@ You can pip install the latest Python package as follows:
 pip install scikit-surgeryopencvcpp
 ```
 
-Developing
-==========
+# Examples
 
-Cloning
--------
+## Surface Reconstruction
+```python
+pip install pptk, opencv-python, scikit-surgeryopencvcpp
+python
+import sksurgeryopencvpython as skscv
+import pptk
+import numpy as np
+import cv2
+left_image = cv2.imread('Testing/Data/calibration/left-1095-undistorted.png')
+right_image = cv2.imread('Testing/Data/calibration/right-1095-undistorted.png')
+left_intrinsics = np.loadtxt('Testing/Data/calibration/calib.left.intrinsic.txt')
+right_intrinsics = np.loadtxt('Testing/Data/calibration/calib.right.intrinsic.txt')
+l2r = np.loadtxt('Testing/Data/calibration/calib.l2r.4x4')
+rotation_matrix = l2r[0:3, 0:3]
+translation_vector = l2r[0:3, 3:4]
+points = skscv.reconstruct_points_using_stoyanov_2010(left_image, left_intrinsics, right_image, right_intrinsics, rotation_matrix, translation_vector, False)
+points_3d = points[:,0:3]
+v = pptk.viewer(points_3d)
+```
+
+# Developing
+
+## Cloning
 
 You can clone the repository using the following command:
 
@@ -43,8 +60,7 @@ git clone https://github.com/UCL/scikit-surgeryopencvcpp.git
 ```
 
 
-Build instructions
-------------------
+## Build instructions
 
 Still not for the faint-hearted. It depends if you are a C++ developer familiar
 with CMake or a hybrid C++/Python developer primarily interested in writing
@@ -54,8 +70,7 @@ The simplest advice really is to read ```appveyor.yml```, as this will always
 be up to date. 
 
 
-Preferred Branching Workflow for Contributions.
------------------------------------------------
+## Preferred Branching Workflow for Contributions.
 
 We welcome contributions to this project. Please use the following workflow.
 
@@ -70,16 +85,14 @@ We welcome contributions to this project. Please use the following workflow.
  7. We will review code, suggest and required changes and merge to master when it is ready.
 
 
-Licensing and copyright
------------------------
+# Licensing and copyright
 
 Copyright 2018 University College London.
 scikit-surgeryopencvcpp is released under the BSD-3 license. 
 Please see the [license file](https://github.com/UCL/scikit-surgeryopencvcpp/blob/master/LICENSE.txt) for details.
 
 
-Acknowledgements
-----------------
+# Acknowledgements
 
 Supported by [Wellcome](https://wellcome.ac.uk/) and the [EPSRC](https://www.epsrc.ac.uk/).
 
