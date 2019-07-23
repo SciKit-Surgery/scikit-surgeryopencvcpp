@@ -37,11 +37,11 @@ import sksurgeryopencvpython as skscv
 import pptk
 import numpy as np
 import cv2
-left_image = cv2.imread('Testing/Data/calibration/left-1095-undistorted.png')
-right_image = cv2.imread('Testing/Data/calibration/right-1095-undistorted.png')
-left_intrinsics = np.loadtxt('Testing/Data/calibration/calib.left.intrinsic.txt')
-right_intrinsics = np.loadtxt('Testing/Data/calibration/calib.right.intrinsic.txt')
-l2r = np.loadtxt('Testing/Data/calibration/calib.l2r.4x4')
+left_image = cv2.imread('Testing/Data/reconstruction/f7_dynamic_deint_L_0100.png')
+right_image = cv2.imread('Testing/Data/reconstruction/f7_dynamic_deint_R_0100.png')
+left_intrinsics = np.loadtxt('Testing/Data/reconstruction/calib.left.intrinsic.txt')
+right_intrinsics = np.loadtxt('Testing/Data/reconstruction/calib.right.intrinsic.txt')
+l2r = np.loadtxt('Testing/Data/reconstruction/calib.l2r.4x4')
 rotation_matrix = l2r[0:3, 0:3]
 translation_vector = l2r[0:3, 3:4]
 points = skscv.reconstruct_points_using_stoyanov_2010(left_image, left_intrinsics, right_image, right_intrinsics, rotation_matrix, translation_vector, False)
