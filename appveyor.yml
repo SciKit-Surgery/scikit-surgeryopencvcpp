@@ -108,11 +108,7 @@ test_script:
     pwd
     cd SKSURGERYOPENCVCPP-build
     pwd
-    ctest -C ${Env:CONFIGURATION} -D ContinuousStart
-    if ($LastExitCode -ne 0) {throw $LastExitCode}
-    ctest -C ${Env:CONFIGURATION} -D ContinuousTest
-    if ($LastExitCode -ne 0) {throw $LastExitCode}
-    ctest -C ${Env:CONFIGURATION} -D ContinuousSubmit
+    ctest -S CTestContinuous.cmake -V
     if ($LastExitCode -ne 0) {throw $LastExitCode}
 
 after_test:
