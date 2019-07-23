@@ -40,7 +40,6 @@ def test_reconstruction():
 
     six.print_('Stoyanov 2010, using midpoint triangulation, in python=:'
                + str((end_stoyanov_midpoint - start_stoyanov_midpoint).total_seconds()))
-    six.print_('Result=' + str(points))
     assert points.shape[0] == 237864
     assert points.shape[1] == 7
 
