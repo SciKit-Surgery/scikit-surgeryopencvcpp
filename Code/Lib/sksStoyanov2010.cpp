@@ -17,7 +17,6 @@
 #include "sksExceptionMacro.h"
 #include "sksValidate.h"
 #include <opencv2/stereo.hpp>
-#include <iostream>
 
 namespace sks
 {
@@ -125,22 +124,14 @@ cv::Mat GetStereoReconstruction(
                                                                               );
   }
 
-  std::cerr << "GetStereoReconstruction:matched=" << matchedPoints.rows
-    << ", triangulated=" << triangulatedPoints.rows
-    << ", method=" << useHartley
-    << std::endl;
-
   cv::Mat outputPoints = cv::Mat(triangulatedPoints.rows, 7, CV_64FC1);
 
   cv::Mat output3D = outputPoints(cv::Rect(0, 0, triangulatedPoints.cols, triangulatedPoints.rows));
   triangulatedPoints.copyTo(output3D);
 
-  std::cerr << "GetStereoReconstruction:copied 3D=" << outputPoints.rows << std::endl;
-
   cv::Mat output2D = outputPoints(cv::Rect(3, 0, matchedPoints.cols, matchedPoints.rows));
   matchedPoints.copyTo(output2D);
 
-  std::cerr << "GetStereoReconstruction:copied 2D=" << outputPoints.rows << std::endl;
   return outputPoints;
 }
 
