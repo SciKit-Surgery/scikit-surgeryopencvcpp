@@ -69,8 +69,9 @@ TEST_CASE( "Reconstruct chessboard.", "[Reconstruction Tests]" ) {
     false
   );
 
-  REQUIRE(pointsIn3D.cols == 7);
   unsigned long int numberOfPoints = pointsIn3D.rows;
   std::cout << "Number of points reconstructed = " <<  numberOfPoints << std::endl;
 
+  REQUIRE(pointsIn3D.cols == 7);
+  REQUIRE(numberOfPoints == 237864);
 }
