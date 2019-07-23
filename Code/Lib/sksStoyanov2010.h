@@ -31,12 +31,26 @@ namespace sks
 
 /**
 * \brief Gets a disparity map image.
+* \param[in] leftImage usually RGB image
+* \param[in] rightImage usually RGB image
+* \return image, same size as original left and right image.
 */
 extern "C++" SKSURGERYOPENCVCPP_WINEXPORT cv::Mat GetDisparityMap(
   const cv::Mat& leftImage,
   const cv::Mat& rightImage
   );
 
+
+/**
+* \brief Gets the matching points in left images.
+* \param[in] leftImage usually RGB image
+* \param[in] rightImage usually RGB image
+* \return Nx4 matrix, where the columns are x_left, y_left, x_right, y_right, i.e. 2D pixel locations.
+*/
+extern "C++" SKSURGERYOPENCVCPP_WINEXPORT cv::Mat GetMatches(
+  const cv::Mat& leftImage,
+  const cv::Mat& rightImage
+  );
 
 /**
 * \brief Does full triangulation of matched points, returning a point cloud.

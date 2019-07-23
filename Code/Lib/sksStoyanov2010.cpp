@@ -18,7 +18,6 @@
 #include "sksValidate.h"
 
 #include <opencv2/stereo.hpp>
-#include <iostream>
 
 namespace sks
 {
@@ -56,6 +55,34 @@ cv::Mat GetDisparityMap(
 
 
 //------------------------------------------------------------------------------
+cv::Mat GetMatches(
+  const cv::Mat& leftImage,
+  const cv::Mat& rightImage
+  )
+{
+  sks::ValidateImages(leftImage, rightImage);
+
+  cv::Size frameSize = leftImage.size();
+
+  cv::Ptr<cv::stereo::QuasiDenseStereo> stereo = cv::stereo::QuasiDenseStereo::create(frameSize);
+  stereo->process(leftImage, rightImage);
+
+  std::vector<cv::stereo::Match> matches;
+  stereo->getDenseMatches(matches);
+
+  cv::Mat matchedPoints = cv::Mat(matches.size(), 4, CV_64FC1);
+  for (std::vector<cv::stereo::Match>::size_type i=0; i < matches.size(); i++)
+  {
+    matchedPoints.at<double>(i, 0) = matches[i].p0.x;
+    matchedPoints.at<double>(i, 1) = matches[i].p0.y;
+    matchedPoints.at<double>(i, 2) = matches[i].p1.x;
+    matchedPoints.at<double>(i, 3) = matches[i].p1.y;
+  }
+  return matchedPoints;
+}
+
+
+//------------------------------------------------------------------------------
 cv::Mat GetStereoReconstruction(
   const cv::Mat& leftImage,
   const cv::Mat& leftCameraMatrix,
@@ -75,22 +102,7 @@ cv::Mat GetStereoReconstruction(
     leftToRightTranslationVector
   );
 
-  cv::Size frameSize = leftImage.size();
-
-  cv::Ptr<cv::stereo::QuasiDenseStereo> stereo = cv::stereo::QuasiDenseStereo::create(frameSize);
-  stereo->process(leftImage, rightImage);
-
-  std::vector<cv::stereo::Match> matches;
-  stereo->getDenseMatches(matches);
-
-  cv::Mat matchedPoints = cv::Mat(matches.size(), 4, CV_64FC1);
-  for (std::vector<cv::stereo::Match>::size_type i=0; i < matches.size(); i++)
-  {
-    matchedPoints.at<double>(i, 0) = matches[i].p0.x;
-    matchedPoints.at<double>(i, 1) = matches[i].p0.y;
-    matchedPoints.at<double>(i, 2) = matches[i].p1.x;
-    matchedPoints.at<double>(i, 3) = matches[i].p1.y;
-  }
+  cv::Mat matchedPoints = sks::GetMatches(leftImage, rightImage);
 
   cv::Mat triangulatedPoints;
 
