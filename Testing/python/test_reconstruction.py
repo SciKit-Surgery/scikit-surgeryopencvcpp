@@ -11,6 +11,7 @@ import cv2
 def test_reconstruction():
 
     # Example from 2nd silicon heart phantom dataset from Hamlyn. http://hamlyn.doc.ic.ac.uk/vision/.
+    # Technically, we should undistort the image first before reconstructing. 
     left_intrinsics_file = 'Testing/Data/reconstruction/calib.left.intrinsic.txt'
     left_intrinsics = np.loadtxt(left_intrinsics_file)
 
