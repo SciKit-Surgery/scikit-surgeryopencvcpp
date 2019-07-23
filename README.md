@@ -85,6 +85,12 @@ We welcome contributions to this project. Please use the following workflow.
  7. We will review code, suggest and required changes and merge to master when it is ready.
 
 
+# Dashboards
+
+In addition to Travis and Appveyor builds, C++ results are also 
+submitted to a public [CDash](http://cdash.cmiclab.cs.ucl.ac.uk/index.php?project=scikit-surgeryopencvcpp) dashboard.
+
+
 # Licensing and copyright
 
 Copyright 2018 University College London.
