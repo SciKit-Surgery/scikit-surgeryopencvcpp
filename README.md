@@ -19,7 +19,7 @@ Features
 
 * Support for Python Wheels, thanks to [Matthew Brett's multibuild](https://github.com/matthew-brett/multibuild).
 * Triangulation using [Hartley and Zisserman's method](http://www.morethantechnical.com/2012/01/04/simple-triangulation-with-opencv-from-harley-zisserman-w-code), and the [midpoint of two lines](http://geomalgorithms.com/a07-_distance.html).
-
+* Surface reconstruction, using [Dan Stoyanov's](https://iris.ucl.ac.uk/iris/browse/profile?upi=DSTOY26) [MICCAI 2010 method](https://link.springer.com/chapter/10.1007/978-3-642-15705-9_34), implemented in [OpenCV](http://www.opencv.org) by [Dimitris Psychogyios](https://github.com/dimitrisPs).
 
 Installing
 ----------
@@ -29,7 +29,6 @@ You can pip install the latest Python package as follows:
 ```
 pip install scikit-surgeryopencvcpp
 ```
-
 
 Developing
 ==========
