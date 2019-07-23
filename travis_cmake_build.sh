@@ -26,7 +26,7 @@ function cmake_build {
   cmake -DSKSURGERYOPENCVCPP_PYTHON_VERSION:STRING=${PYTHON_VERSION} -DSKSURGERYOPENCVCPP_USE_V4L:BOOL=ON -DSKSURGERYOPENCVCPP_USE_GSTREAMER:BOOL=ON -DBUILD_SUPERBUILD:BOOL=ON -DBUILD_TESTING:BOOL=ON -DCMAKE_BUILD_TYPE:String=Release ${extra_flags} ..
   make -j 2
   cd SKSURGERYOPENCVCPP-build
-  ctest .
+  ctest -D Continuous
   cd ../../
   echo "Finished travis_cmake_build.sh"
 }

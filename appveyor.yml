@@ -108,7 +108,7 @@ test_script:
     pwd
     cd SKSURGERYOPENCVCPP-build
     pwd
-    ctest -C ${Env:CONFIGURATION}
+    ctest -C ${Env:CONFIGURATION} -D Continuous
     if ($LastExitCode -ne 0) {throw $LastExitCode}
 
 after_test:
