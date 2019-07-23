@@ -38,9 +38,6 @@ def test_reconstruction():
     end_stoyanov = datetime.datetime.now()
 
     six.print_('Stoyanov 2010 in python=:' + str((end_stoyanov - start_stoyanov).total_seconds()))
-    six.print_('Shape is:' + str(points.shape))
-    # Not a good unit test.
-    # Just checking that the code runs.
-    #assert points.shape[0] == 622349
+    assert points.shape[0] == 237864
     assert points.shape[1] == 3
 
