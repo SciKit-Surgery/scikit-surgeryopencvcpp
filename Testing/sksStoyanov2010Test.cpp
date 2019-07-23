@@ -65,11 +65,11 @@ TEST_CASE( "Reconstruct chessboard.", "[Reconstruction Tests]" ) {
     rightImage,
     rightCameraMatrix,
     leftToRightRotation,
-    leftToRightTranslation
+    leftToRightTranslation,
+    false
   );
 
-  REQUIRE(pointsIn3D.cols == 3);
-
+  REQUIRE(pointsIn3D.cols == 7);
   unsigned long int numberOfPoints = pointsIn3D.rows;
   std::cout << "Number of points reconstructed = " <<  numberOfPoints << std::endl;
 

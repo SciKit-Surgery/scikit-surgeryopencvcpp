@@ -62,7 +62,8 @@ cv::Mat GetStereoReconstruction(
   const cv::Mat& rightImage,
   const cv::Mat& rightCameraMatrix,
   const cv::Mat& leftToRightRotationMatrix,
-  const cv::Mat& leftToRightTranslationVector
+  const cv::Mat& leftToRightTranslationVector,
+  const bool useHartley
   )
 {
   sks::ValidateImages(leftImage, rightImage);
@@ -91,12 +92,35 @@ cv::Mat GetStereoReconstruction(
     matchedPoints.at<double>(i, 3) = matches[i].p1.y;
   }
 
-  cv::Mat outputPoints = sks::TriangulatePointsUsingHartley(matchedPoints,
+  cv::Mat triangulatedPoints;
+
+  if (useHartley)
+  {
+    triangulatedPoints = sks::TriangulatePointsUsingHartley(matchedPoints,
                                                             leftCameraMatrix,
                                                             rightCameraMatrix,
                                                             leftToRightRotationMatrix,
                                                             leftToRightTranslationVector
                                                            );
+  }
+  else
+  {
+    triangulatedPoints = sks::TriangulatePointsUsingMidpointOfShortestDistance(matchedPoints,
+                                                                               leftCameraMatrix,
+                                                                               rightCameraMatrix,
+                                                                               leftToRightRotationMatrix,
+                                                                               leftToRightTranslationVector
+                                                                              );
+  }
+
+  cv::Mat outputPoints = cv::Mat(triangulatedPoints.rows, 7, CV_64FC1);
+
+  cv::Mat output3D = outputPoints(cv::Rect(0, 0, triangulatedPoints.cols, triangulatedPoints.rows));
+  triangulatedPoints.copyTo(output3D);
+
+  cv::Mat output2D = outputPoints(cv::Rect(3, 0, matchedPoints.cols, matchedPoints.rows));
+  matchedPoints.copyTo(output2D);
+
   return outputPoints;
 }
 

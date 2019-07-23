@@ -25,19 +25,39 @@ def test_reconstruction():
     left_image = cv2.imread('Testing/Data/calibration/left-1095-undistorted.png')
     right_image = cv2.imread('Testing/Data/calibration/right-1095-undistorted.png')
 
-    start_stoyanov = datetime.datetime.now()
+    start_stoyanov_midpoint = datetime.datetime.now()
 
     points = cvpy.reconstruct_points_using_stoyanov_2010(left_image,
                                                          left_intrinsics,
                                                          right_image,
                                                          right_intrinsics,
                                                          rotation_matrix,
-                                                         translation_vector
+                                                         translation_vector,
+                                                         False
                                                          )
 
-    end_stoyanov = datetime.datetime.now()
+    end_stoyanov_midpoint = datetime.datetime.now()
 
-    six.print_('Stoyanov 2010 in python=:' + str((end_stoyanov - start_stoyanov).total_seconds()))
+    six.print_('Stoyanov 2010, using midpoint triangulation, in python=:'
+               + str((end_stoyanov_midpoint - start_stoyanov_midpoint).total_seconds()))
+    six.print_('Result=' + str(points))
     assert points.shape[0] == 237864
-    assert points.shape[1] == 3
+    assert points.shape[1] == 7
 
+    start_stoyanov_hartley = datetime.datetime.now()
+
+    points = cvpy.reconstruct_points_using_stoyanov_2010(left_image,
+                                                         left_intrinsics,
+                                                         right_image,
+                                                         right_intrinsics,
+                                                         rotation_matrix,
+                                                         translation_vector,
+                                                         True
+                                                         )
+
+    end_stoyanov_hartley = datetime.datetime.now()
+
+    six.print_('Stoyanov 2010, using Hartley triangulation, in python=:'
+               + str((end_stoyanov_hartley - start_stoyanov_hartley).total_seconds()))
+    assert points.shape[0] == 237864
+    assert points.shape[1] == 7

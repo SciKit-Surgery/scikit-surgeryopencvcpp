@@ -31,8 +31,6 @@ namespace sks
 
 /**
 * \brief Gets a disparity map image.
-*
-* Not sure the underlying library in OpenCV is ready yet.
 */
 extern "C++" SKSURGERYOPENCVCPP_WINEXPORT cv::Mat GetDisparityMap(
   const cv::Mat& leftImage,
@@ -42,6 +40,14 @@ extern "C++" SKSURGERYOPENCVCPP_WINEXPORT cv::Mat GetDisparityMap(
 
 /**
 * \brief Does full triangulation of matched points, returning a point cloud.
+* \param[in] leftImage usually RGB image
+* \param[in] leftCameraMatrix 3x3 matrix containing fx, fy, cx, cy
+* \param[in] rightImage usually RGB image
+* \param[in] rightCameraMatrix 3x3 matrix containing fx, fy, cx, cy
+* \param[in] leftToRightRotationMatrix 3x3 rotation matrix
+* \param[in] leftToRightTranslationVector 3x1 translation column vector
+* \param[in] useHartley if false, uses midpoint method, if true, uses hartley. See sksTriangulate.h.
+* \return Nx7 matrix, where the columns are X,Y,Z (3D triangulated point), x_left, y_left, x_right, y_right (2D matches).
 */
 extern "C++" SKSURGERYOPENCVCPP_WINEXPORT cv::Mat GetStereoReconstruction(
   const cv::Mat& leftImage,
@@ -49,7 +55,8 @@ extern "C++" SKSURGERYOPENCVCPP_WINEXPORT cv::Mat GetStereoReconstruction(
   const cv::Mat& rightImage,
   const cv::Mat& rightCameraMatrix,
   const cv::Mat& leftToRightRotationMatrix,
-  const cv::Mat& leftToRightTranslationVector
+  const cv::Mat& leftToRightTranslationVector,
+  const bool useHartley
   );
 
 } // end namespace
