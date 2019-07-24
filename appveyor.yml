@@ -78,6 +78,8 @@ before_build:
     if ($LastExitCode -ne 0) {throw $LastExitCode}
     &"${Env:MB_PYTHON}/python.exe" -m pip install --upgrade numpy
     if ($LastExitCode -ne 0) {throw $LastExitCode}
+    &"${Env:MB_PYTHON}/python.exe" -m pip install --upgrade opencv-python
+    if ($LastExitCode -ne 0) {throw $LastExitCode}
     &"${Env:MB_PYTHON}/python.exe" -m pip install --upgrade --no-warn-script-location wheel
     if ($LastExitCode -ne 0) {throw $LastExitCode}
 
@@ -92,7 +94,7 @@ build_script:
     cmake -version
     mkdir build
     cd build
-    cmake -G "${Env:COMPILER}" -DBUILD_SUPERBUILD:BOOL=ON -DBUILD_TESTING:BOOL=ON --config ${Env:CONFIGURATION} ..
+    cmake -G "${Env:COMPILER}" -DBUILD_SUPERBUILD:BOOL=ON -DBUILD_TESTING:BOOL=ON -DCMAKE_BUILD_TYPE:String=Release --config ${Env:CONFIGURATION} ..
     if ($LastExitCode -ne 0) {throw $LastExitCode}
     cmake --build . --config ${Env:CONFIGURATION}
     if ($LastExitCode -ne 0) {throw $LastExitCode}
@@ -106,7 +108,7 @@ test_script:
     pwd
     cd SKSURGERYOPENCVCPP-build
     pwd
-    ctest -C ${Env:CONFIGURATION}
+    ctest -S CTestContinuous.cmake -V
     if ($LastExitCode -ne 0) {throw $LastExitCode}
 
 after_test:

@@ -23,7 +23,7 @@ if(NOT BUILDING_GUIS)
 
   if (BUILD_OpenCV)
     list(APPEND SKSURGERYOPENCVCPP_PYTHON_SRCS sksLibPythonWithOpenCV.cpp) #Rename as appropriate.
-    message("Including pyboostcvconverter, thanks to Gregory Kramida.")
+    message(STATUS "Including pyboostcvconverter, thanks to Gregory Kramida.")
 
     execute_process(
       COMMAND "${PYTHON_EXECUTABLE}" -c
@@ -33,7 +33,7 @@ if(NOT BUILDING_GUIS)
       COMMAND "${PYTHON_EXECUTABLE}" -c
               "from __future__ import print_function\ntry: import numpy; print(numpy.__version__, end='')\nexcept:pass\n"
       OUTPUT_VARIABLE NumPy_VERSION)
-    message("Found NumPy_INCLUDE_DIR=${NumPy_INCLUDE_DIR}, NumPy_VERSION=${NumPy_VERSION}")
+    message(STATUS "Found NumPy_INCLUDE_DIR=${NumPy_INCLUDE_DIR}, NumPy_VERSION=${NumPy_VERSION}")
     include_directories(${NumPy_INCLUDE_DIR})
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/pyboostcvconverter/include)
     list(APPEND SKSURGERYOPENCVCPP_PYTHON_SRCS pyboostcvconverter/src/pyboost_cv4_converter.cpp)

@@ -15,6 +15,8 @@
 option(BUILD_OpenCV "Build OpenCV." ON)
 mark_as_advanced(BUILD_OpenCV)
 
+set(OPENCV_VERSION "4.1.0")
+
 if(BUILD_VTK AND APPLE AND BUILD_OpenCV AND "${VTK_VERSION}" STREQUAL "${DEFAULT_VTK_VERSION}")
   set(VTK_VERSION "${FALLBACK_VTK_VERSION}")
   message("Forcing VTK_VERSION to ${VTK_VERSION} as you are on Mac OSX and BUILD_OpenCV is on.")

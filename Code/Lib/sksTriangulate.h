@@ -21,7 +21,7 @@
 /**
 * \file sksTriangulate.h
 * \brief Functions concerned with triangulation of sets of points.
-* \ingroup utilities
+* \ingroup algorithms
 */
 namespace sks
 {
