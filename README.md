@@ -44,7 +44,7 @@ right_intrinsics = np.loadtxt('Testing/Data/reconstruction/calib.right.intrinsic
 l2r = np.loadtxt('Testing/Data/reconstruction/calib.l2r.4x4')
 rotation_matrix = l2r[0:3, 0:3]
 translation_vector = l2r[0:3, 3:4]
-points = skscv.reconstruct_points_using_stoyanov_2010(left_image, left_intrinsics, right_image, right_intrinsics, rotation_matrix, translation_vector, False)
+points = skscv.reconstruct_points_using_stoyanov(left_image, left_intrinsics, right_image, right_intrinsics, rotation_matrix, translation_vector, False)
 points_3d = points[:,0:3]
 v = pptk.viewer(points_3d)
 ```
