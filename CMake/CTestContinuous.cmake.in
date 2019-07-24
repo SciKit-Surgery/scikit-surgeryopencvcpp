@@ -143,7 +143,6 @@ endif()
 set(PARALLEL_LEVEL ${cpu_cores})
 
 ctest_start(Continuous TRACK ${group_name})
-ctest_build()
 ctest_test(EXCLUDE "${tests_to_exclude}" RETURN_VALUE exitCode)
 ctest_submit()
 
