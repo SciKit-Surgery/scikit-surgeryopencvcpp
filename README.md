@@ -31,7 +31,7 @@ pip install scikit-surgeryopencvcpp
 
 ## Surface Reconstruction
 ```python
-pip install pptk, opencv-python, scikit-surgeryopencvcpp
+pip install pptk opencv-python scikit-surgeryopencvcpp
 python
 import sksurgeryopencvpython as skscv
 import pptk
