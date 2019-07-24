@@ -35,7 +35,7 @@ namespace sks
 * \param[in] rightImage usually RGB image
 * \return image, same size as original left and right image.
 */
-extern "C++" SKSURGERYOPENCVCPP_WINEXPORT cv::Mat GetDisparityMap(
+extern "C++" SKSURGERYOPENCVCPP_WINEXPORT cv::Mat ComputeDisparityUsingStoyanov(
   const cv::Mat& leftImage,
   const cv::Mat& rightImage
   );
@@ -47,7 +47,7 @@ extern "C++" SKSURGERYOPENCVCPP_WINEXPORT cv::Mat GetDisparityMap(
 * \param[in] rightImage usually RGB image
 * \return Nx4 matrix, where the columns are x_left, y_left, x_right, y_right, i.e. 2D pixel locations.
 */
-extern "C++" SKSURGERYOPENCVCPP_WINEXPORT cv::Mat GetMatches(
+extern "C++" SKSURGERYOPENCVCPP_WINEXPORT cv::Mat MatchPointsUsingStoyanov(
   const cv::Mat& leftImage,
   const cv::Mat& rightImage
   );
@@ -63,7 +63,7 @@ extern "C++" SKSURGERYOPENCVCPP_WINEXPORT cv::Mat GetMatches(
 * \param[in] useHartley if false, uses midpoint method, if true, uses hartley. See sksTriangulate.h.
 * \return Nx7 matrix, where the columns are X,Y,Z (3D triangulated point), x_left, y_left, x_right, y_right (2D matches).
 */
-extern "C++" SKSURGERYOPENCVCPP_WINEXPORT cv::Mat GetStereoReconstruction(
+extern "C++" SKSURGERYOPENCVCPP_WINEXPORT cv::Mat ReconstructPointsUsingStoyanov(
   const cv::Mat& leftImage,
   const cv::Mat& leftCameraMatrix,
   const cv::Mat& rightImage,

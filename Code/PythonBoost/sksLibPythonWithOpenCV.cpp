@@ -66,9 +66,9 @@ BOOST_PYTHON_MODULE (sksurgeryopencvpython) {
 
   boost::python::def("triangulate_points_using_hartley", TriangulatePointsUsingHartley);
   boost::python::def("triangulate_points_using_midpoint", TriangulatePointsUsingMidpointOfShortestDistance);
-  boost::python::def("disparity_map_using_stoyanov_2010", GetDisparityMap);
-  boost::python::def("match_points_using_stoyanov_2010", GetMatches);
-  boost::python::def("reconstruct_points_using_stoyanov_2010", GetStereoReconstruction);
+  boost::python::def("compute_disparity_using_stoyanov", ComputeDisparityUsingStoyanov);
+  boost::python::def("match_points_using_stoyanov", MatchPointsUsingStoyanov);
+  boost::python::def("reconstruct_points_using_stoyanov", ReconstructPointsUsingStoyanov);
 
   class_<VideoCapture>("VideoCapture", init<int, int, int>())
     .def(init<int>())

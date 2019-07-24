@@ -59,7 +59,7 @@ TEST_CASE( "Reconstruct chessboard.", "[Reconstruction Tests]" ) {
   leftToRightTranslation.at<double>(1, 0) = 0.268695;
   leftToRightTranslation.at<double>(2, 0) = 1.300256;
 
-  cv::Mat pointsIn3D = sks::GetStereoReconstruction(
+  cv::Mat pointsIn3D = sks::ReconstructPointsUsingStoyanov(
     leftImage,
     leftCameraMatrix,
     rightImage,

@@ -29,14 +29,14 @@ def test_reconstruction():
 
     start_stoyanov_midpoint = datetime.datetime.now()
 
-    points = cvpy.reconstruct_points_using_stoyanov_2010(left_image,
-                                                         left_intrinsics,
-                                                         right_image,
-                                                         right_intrinsics,
-                                                         rotation_matrix,
-                                                         translation_vector,
-                                                         False
-                                                         )
+    points = cvpy.reconstruct_points_using_stoyanov(left_image,
+                                                    left_intrinsics,
+                                                    right_image,
+                                                    right_intrinsics,
+                                                    rotation_matrix,
+                                                    translation_vector,
+                                                    False
+                                                    )
 
     end_stoyanov_midpoint = datetime.datetime.now()
     number_of_points = points.shape[0]
@@ -47,18 +47,18 @@ def test_reconstruction():
 
     start_stoyanov_hartley = datetime.datetime.now()
 
-    points = cvpy.reconstruct_points_using_stoyanov_2010(left_image,
-                                                         left_intrinsics,
-                                                         right_image,
-                                                         right_intrinsics,
-                                                         rotation_matrix,
-                                                         translation_vector,
-                                                         True
-                                                         )
+    points = cvpy.reconstruct_points_using_stoyanov(left_image,
+                                                    left_intrinsics,
+                                                    right_image,
+                                                    right_intrinsics,
+                                                    rotation_matrix,
+                                                    translation_vector,
+                                                    True
+                                                    )
 
     end_stoyanov_hartley = datetime.datetime.now()
 
     six.print_('Stoyanov 2010, using Hartley triangulation, in python=:'
                + str((end_stoyanov_hartley - start_stoyanov_hartley).total_seconds()))
-    assert points.shape[0] == number_of_points # can only check for consistency.
+    assert points.shape[0] == number_of_points  # can only check for consistency.
     assert points.shape[1] == 7

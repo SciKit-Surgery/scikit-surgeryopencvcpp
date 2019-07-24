@@ -36,10 +36,9 @@ void ValidateImages(const cv::Mat& leftImage, const cv::Mat& rightImage)
 
 
 //------------------------------------------------------------------------------
-cv::Mat GetDisparityMap(
+cv::Ptr<cv::stereo::QuasiDenseStereo> DoStereoMatching(
   const cv::Mat& leftImage,
-  const cv::Mat& rightImage
-  )
+  const cv::Mat& rightImage)
 {
   sks::ValidateImages(leftImage, rightImage);
 
@@ -47,6 +46,20 @@ cv::Mat GetDisparityMap(
 
   cv::Ptr<cv::stereo::QuasiDenseStereo> stereo = cv::stereo::QuasiDenseStereo::create(frameSize);
   stereo->process(leftImage, rightImage);
+
+  return stereo;
+}
+
+
+//------------------------------------------------------------------------------
+cv::Mat ComputeDisparityUsingStoyanov(
+  const cv::Mat& leftImage,
+  const cv::Mat& rightImage
+  )
+{
+  sks::ValidateImages(leftImage, rightImage);
+
+  cv::Ptr<cv::stereo::QuasiDenseStereo> stereo = sks::DoStereoMatching(leftImage, rightImage);
 
   cv::Mat outputImage = stereo->getDisparity(80);
   return outputImage;
@@ -54,17 +67,14 @@ cv::Mat GetDisparityMap(
 
 
 //------------------------------------------------------------------------------
-cv::Mat GetMatches(
+cv::Mat MatchPointsUsingStoyanov(
   const cv::Mat& leftImage,
   const cv::Mat& rightImage
   )
 {
   sks::ValidateImages(leftImage, rightImage);
 
-  cv::Size frameSize = leftImage.size();
-
-  cv::Ptr<cv::stereo::QuasiDenseStereo> stereo = cv::stereo::QuasiDenseStereo::create(frameSize);
-  stereo->process(leftImage, rightImage);
+  cv::Ptr<cv::stereo::QuasiDenseStereo> stereo = sks::DoStereoMatching(leftImage, rightImage);
 
   std::vector<cv::stereo::Match> matches;
   stereo->getDenseMatches(matches);
@@ -82,7 +92,7 @@ cv::Mat GetMatches(
 
 
 //------------------------------------------------------------------------------
-cv::Mat GetStereoReconstruction(
+cv::Mat ReconstructPointsUsingStoyanov(
   const cv::Mat& leftImage,
   const cv::Mat& leftCameraMatrix,
   const cv::Mat& rightImage,
@@ -101,7 +111,7 @@ cv::Mat GetStereoReconstruction(
     leftToRightTranslationVector
   );
 
-  cv::Mat matchedPoints = sks::GetMatches(leftImage, rightImage);
+  cv::Mat matchedPoints = sks::MatchPointsUsingStoyanov(leftImage, rightImage);
 
   cv::Mat triangulatedPoints;
 
