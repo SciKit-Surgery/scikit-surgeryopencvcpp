@@ -264,8 +264,8 @@ endif(BUILD_SUPERBUILD)
 # are, just to make it really explicit... well, explicit to the user
 # that bothers to read these messages! :-)
 ######################################################################
-message("CMAKE_SOURCE_DIR=${CMAKE_SOURCE_DIR}")
-message("CMAKE_BINARY_DIR=${CMAKE_BINARY_DIR}")
+message(STATUS "CMAKE_SOURCE_DIR=${CMAKE_SOURCE_DIR}")
+message(STATUS "CMAKE_BINARY_DIR=${CMAKE_BINARY_DIR}")
 
 
 ######################################################################
