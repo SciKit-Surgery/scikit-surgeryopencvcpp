@@ -37,12 +37,12 @@ macro(GetBranchName branch_name_var)
     message(SEND_ERROR "Command '${CTEST_GIT_COMMAND} branch -r --contains HEAD --merged' failed with output:\n${GIT_error}")
   endif()
 
-  # message("remote refs: ${remote_ref_names}")
+  # message(STATUS "remote refs: ${remote_ref_names}")
 
   if("${remote_ref_names}" MATCHES "origin/([^ \n]*)\n")
     set(branch_name ${CMAKE_MATCH_1})
   else()
-    message("Branch has not been pushed to origin. Test report will be submitted to the Continuous group.")
+    message(STATUS "Branch has not been pushed to origin. Test report will be submitted to the Continuous group.")
   endif()
 
   set(${branch_name_var} ${branch_name})
