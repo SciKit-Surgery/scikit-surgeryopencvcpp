@@ -129,10 +129,10 @@ else()
   set(group_name "Continuous")
 endif()
 
-message("Remote branch: ${branch_name}")
-message("Group: ${group_name}")
-message("Build name: ${build_name}")
-message("Threads: ${cpu_cores}")
+message(STATUS "Remote branch: ${branch_name}")
+message(STATUS "Group: ${group_name}")
+message(STATUS "Build name: ${build_name}")
+message(STATUS "Threads: ${cpu_cores}")
 
 set(CTEST_BUILD_NAME ${build_name})
 
