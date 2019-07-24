@@ -70,11 +70,11 @@ set(CTEST_BUILD_NAME ${CTBN} CACHE STRING "${CTBN}" FORCE)
 mark_as_advanced(BUILDNAME)
 mark_as_advanced(CTEST_BUILD_NAME)
 
-message("scikit-surgeryopencvcpp branch=${SKSURGERYOPENCVCPP_BRANCH_NAME}")
-message("scikit-surgeryopencvcpp version=${SKSURGERYOPENCVCPP_REVISION_SHORTID}")
-message("scikit-surgeryopencvcpp date=${SKSURGERYOPENCVCPP_DATE_TIME}")
-message("scikit-surgeryopencvcpp ctest-name=${CTEST_BUILD_NAME}")
-message("scikit-surgeryopencvcpp build-name=${BUILDNAME}")
+message(STATUS "scikit-surgeryopencvcpp branch=${SKSURGERYOPENCVCPP_BRANCH_NAME}")
+message(STATUS "scikit-surgeryopencvcpp version=${SKSURGERYOPENCVCPP_REVISION_SHORTID}")
+message(STATUS "scikit-surgeryopencvcpp date=${SKSURGERYOPENCVCPP_DATE_TIME}")
+message(STATUS "scikit-surgeryopencvcpp ctest-name=${CTEST_BUILD_NAME}")
+message(STATUS "scikit-surgeryopencvcpp build-name=${BUILDNAME}")
 
 ######################################################################
 # Configure Dart testing support.  This should be done before any
