@@ -177,6 +177,9 @@ if(NOT DEFINED BOOST_ROOT AND NOT SKSURGERYOPENCVCPP_USE_SYSTEM_Boost)
       -q
   )
 
+  message(STATUS "Matt, MSVC_VERSION=${MSVC_VERSION}")
+  message(STATUS "Matt, _build_cmd=${_build_cmd}")
+
   if(SKSURGERYOPENCVCPP_USE_Boost_LIBRARIES)
     set(_boost_build_cmd BUILD_COMMAND ${_build_cmd})
     set(_install_cmd ${_build_cmd} install ${_macos_change_install_name_cmd} ${_windows_move_libs_cmd})
