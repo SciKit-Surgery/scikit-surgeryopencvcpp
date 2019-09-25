@@ -24,6 +24,7 @@
 #include "sksStoyanov2010.h"
 #include "sksException.h"
 #include "sksVideoCapture.h"
+#include "sksMasking.h"
 
 #include <boost/python.hpp>
 #include <boost/python/exception_translator.hpp>
@@ -69,6 +70,8 @@ BOOST_PYTHON_MODULE (sksurgeryopencvpython) {
   boost::python::def("compute_disparity_using_stoyanov", ComputeDisparityUsingStoyanov);
   boost::python::def("match_points_using_stoyanov", MatchPointsUsingStoyanov);
   boost::python::def("reconstruct_points_using_stoyanov", ReconstructPointsUsingStoyanov);
+  boost::python::def("mask_points", MaskPoints);
+  boost::python::def("mask_stereo_points", MaskStereoPoints);
 
   class_<VideoCapture>("VideoCapture", init<int, int, int>())
     .def(init<int>())
