@@ -22,6 +22,7 @@
 
 #include "sksTriangulate.h"
 #include "sksStoyanov2010.h"
+#include "sksChArUco.h"
 #include "sksException.h"
 #include "sksVideoCapture.h"
 #include "sksMasking.h"
@@ -72,6 +73,7 @@ BOOST_PYTHON_MODULE (sksurgeryopencvpython) {
   boost::python::def("reconstruct_points_using_stoyanov", ReconstructPointsUsingStoyanov);
   boost::python::def("mask_points", MaskPoints);
   boost::python::def("mask_stereo_points", MaskStereoPoints);
+  boost::python::def("filter_erroneous_charuco_points", FilterErroneousChArUcoPoints);
 
   class_<VideoCapture>("VideoCapture", init<int, int, int>())
     .def(init<int>())

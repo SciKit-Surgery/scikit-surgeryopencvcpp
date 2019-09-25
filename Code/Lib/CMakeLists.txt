@@ -24,6 +24,7 @@ set(SKSURGERYOPENCVCPP_LIBRARY_SRCS
   sksVideoCapture.cpp
   sksStoyanov2010.cpp
   sksMasking.cpp
+  sksChArUco.cpp
 )
 
 set(SKSURGERYOPENCVCPP_LIBRARY_HDRS
