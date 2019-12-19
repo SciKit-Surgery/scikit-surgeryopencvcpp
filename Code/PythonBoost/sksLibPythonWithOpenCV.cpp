@@ -25,6 +25,7 @@
 #include "sksException.h"
 #include "sksVideoCapture.h"
 #include "sksMasking.h"
+#include "sksDotDetection.h"
 
 #include <boost/python.hpp>
 #include <boost/python/exception_translator.hpp>
@@ -72,6 +73,7 @@ BOOST_PYTHON_MODULE (sksurgeryopencvpython) {
   boost::python::def("reconstruct_points_using_stoyanov", ReconstructPointsUsingStoyanov);
   boost::python::def("mask_points", MaskPoints);
   boost::python::def("mask_stereo_points", MaskStereoPoints);
+  boost::python::def("extract_dots", ExtractDots);
 
   class_<VideoCapture>("VideoCapture", init<int, int, int>())
     .def(init<int>())
