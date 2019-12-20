@@ -19,6 +19,8 @@
 #include <cstdlib>
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
+#include <opencv2/imgproc.hpp>
+#include <chrono>
 
 TEST_CASE( "Check one file of dots.", "[Dot Detection Tests]" ) {
 
@@ -44,10 +46,10 @@ TEST_CASE( "Check one file of dots.", "[Dot Detection Tests]" ) {
 
   cv::Mat leftDistortionMatrix = cv::Mat::eye(1, 5, CV_64FC1);
   leftDistortionMatrix.at<double>(0, 0) = -0.291690;
-  leftDistortionMatrix.at<double>(0, 0) = -0.001882;
-  leftDistortionMatrix.at<double>(0, 0) = 0.007161;
-  leftDistortionMatrix.at<double>(0, 0) = -0.000171;
-  leftDistortionMatrix.at<double>(0, 0) = 0.374519;
+  leftDistortionMatrix.at<double>(0, 1) = -0.001882;
+  leftDistortionMatrix.at<double>(0, 2) = 0.007161;
+  leftDistortionMatrix.at<double>(0, 3) = -0.000171;
+  leftDistortionMatrix.at<double>(0, 4) = 0.374519;
 
   cv::Mat gridPoints = cv::Mat::zeros(18 * 25, 6, CV_64FC1);
   unsigned int counter = 0;
@@ -65,25 +67,30 @@ TEST_CASE( "Check one file of dots.", "[Dot Detection Tests]" ) {
     }
   }
 
-  std::cerr << "Grid is:" << std::endl << gridPoints << std::endl;
-
-  cv::Mat referencePoints = cv::Mat::zeros(4, 1, CV_16UC1);
+  cv::Mat referencePoints = cv::Mat::zeros(4, 1, CV_32S);
   referencePoints.at<int>(0, 0) = 133;
   referencePoints.at<int>(1, 0) = 141;
   referencePoints.at<int>(2, 0) = 308;
   referencePoints.at<int>(3, 0) = 316;
 
-  std::cerr << "Reference points are:" << std::endl << referencePoints << std::endl;
+  cv::Mat greyscaleImage;
+  cv::cvtColor(leftImage, greyscaleImage, cv::COLOR_BGR2GRAY);
+
+  auto start = std::chrono::high_resolution_clock::now();
 
   cv::Mat result = sks::ExtractDots(
-    leftImage,
+    greyscaleImage,
     leftCameraMatrix,
     leftDistortionMatrix,
     gridPoints,
     referencePoints
   );
 
-  REQUIRE(&result != &leftImage);
+  auto end = std::chrono::high_resolution_clock::now();
+  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+  std::cerr << "Duration=" << duration.count() << std::endl;
+
+  REQUIRE(result.rows == expectedNumberOfDots);
   REQUIRE(result.cols == 6);
 
 }
