@@ -38,7 +38,11 @@ def __check_real_image(image_file_name,
     intrinsics = np.loadtxt(intrinsics_file_name)
     distortion = np.loadtxt(distortion_file_name)
     model = __setup_dotty_calibration_model()
-    fiducial_indexes = [133, 141, 308, 316]
+    fiducial_indexes = np.ones(4,1)
+    fiducial_indexes[0][0] = 133
+    fiducial_indexes[1][0] = 141
+    fiducial_indexes[2][0] = 308
+    fiducial_indexes[3][0] = 316
 
     time_before = datetime.datetime.now()
 
@@ -48,11 +52,13 @@ def __check_real_image(image_file_name,
                                model,
                                fiducial_indexes
                                )
-
     time_after = datetime.datetime.now()
     time_diff = time_after - time_before
 
     print("__check_real_image:time_diff=" + str(time_diff))
+
+    ids = results[:, 0]
+    image_points = results[:, 1, 3]
 
     font = cv2.FONT_HERSHEY_SIMPLEX
     for counter in range(ids.shape[0]):
