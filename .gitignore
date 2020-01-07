@@ -25,3 +25,6 @@
 build/
 dist/
 *.egg-info
+
+# For unit test output
+Testing/output
