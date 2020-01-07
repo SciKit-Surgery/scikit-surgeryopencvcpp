@@ -68,7 +68,11 @@ def __check_real_image(image_file_name,
     previous_dir = os.path.dirname(split_path[0])
     previous_dir = os.path.basename(previous_dir)
     base_name = os.path.basename(split_path[0])
-    output_file = os.path.join('tests/output', base_name + '_' + previous_dir + '_labelled.png')
+    test_output = 'Testing/output'
+    output_file = os.path.join(test_output, base_name + '_' + previous_dir + '_labelled.png')
+    if not os.path.exists(test_output):
+        logging.debug("Creating directory: %s", test_output)
+        os.makedirs(test_output)
     cv2.imwrite(output_file, image)
     return ids.shape[0]
 
