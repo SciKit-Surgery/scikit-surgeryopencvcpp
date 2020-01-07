@@ -35,10 +35,11 @@ def __check_real_image(image_file_name,
                        ):
     logging.basicConfig(level=logging.DEBUG)
     image = cv2.imread(image_file_name)
+    greyscale = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     intrinsics = np.loadtxt(intrinsics_file_name)
     distortion = np.loadtxt(distortion_file_name)
     model = __setup_dotty_calibration_model()
-    fiducial_indexes = np.ones(4,1)
+    fiducial_indexes = np.ones((4, 1), dtype=int)
     fiducial_indexes[0][0] = 133
     fiducial_indexes[1][0] = 141
     fiducial_indexes[2][0] = 308
@@ -46,7 +47,7 @@ def __check_real_image(image_file_name,
 
     time_before = datetime.datetime.now()
 
-    results = sks.extract_dots(image,
+    results = sks.extract_dots(greyscale,
                                intrinsics,
                                distortion,
                                model,
@@ -58,11 +59,11 @@ def __check_real_image(image_file_name,
     print("__check_real_image:time_diff=" + str(time_diff))
 
     ids = results[:, 0]
-    image_points = results[:, 1, 3]
+    image_points = results[:, 1:3]
 
     font = cv2.FONT_HERSHEY_SIMPLEX
     for counter in range(ids.shape[0]):
-        cv2.putText(image, str(ids[counter][0]), (int(image_points[counter][0]), int(image_points[counter][1])), font, 0.5, (0, 255, 0), 2, cv2.LINE_AA)
+        cv2.putText(image, str(ids[counter]), (int(image_points[counter][0]), int(image_points[counter][1])), font, 0.5, (0, 255, 0), 2, cv2.LINE_AA)
     split_path = os.path.splitext(image_file_name)
     previous_dir = os.path.dirname(split_path[0])
     previous_dir = os.path.basename(previous_dir)
@@ -77,7 +78,7 @@ def test_dotty_uncalibrated_1():
                                           'Testing/Data/calib-ucl-circles/calib.left.intrinsics.txt',
                                           'Testing/Data/calib-ucl-circles/calib.left.distortion.txt',
                                           )
-    assert(373 == number_of_points)
+    assert(374 == number_of_points)
 
 
 def test_dotty_uncalibrated_2():
@@ -93,7 +94,7 @@ def test_dotty_uncalibrated_3():
                                           'Testing/Data/calib-ucl-circles/calib.left.intrinsics.txt',
                                           'Testing/Data/calib-ucl-circles/calib.left.distortion.txt',
                                           )
-    assert(374 == number_of_points)
+    assert(375 == number_of_points)
 
 
 def test_dotty_uncalibrated_4():
@@ -101,7 +102,7 @@ def test_dotty_uncalibrated_4():
                                           'Testing/Data/calib-ucl-circles/calib.right.intrinsics.txt',
                                           'Testing/Data/calib-ucl-circles/calib.right.distortion.txt',
                                           )
-    assert(362 == number_of_points)
+    assert(364 == number_of_points)
 
 
 def test_dotty_uncalibrated_5():
@@ -109,7 +110,7 @@ def test_dotty_uncalibrated_5():
                                           'Testing/Data/calib-ucl-circles/calib.left.intrinsics.txt',
                                           'Testing/Data/calib-ucl-circles/calib.left.distortion.txt',
                                           )
-    assert(352 == number_of_points)
+    assert(354 == number_of_points)
 
 
 def test_dotty_uncalibrated_6():
@@ -125,7 +126,7 @@ def test_dotty_uncalibrated_7():
                                           'Testing/Data/calib-ucl-circles/calib.left.intrinsics.txt',
                                           'Testing/Data/calib-ucl-circles/calib.left.distortion.txt',
                                           )
-    assert(376 == number_of_points)
+    assert(377 == number_of_points)
 
 
 def test_dotty_uncalibrated_8():
@@ -141,7 +142,7 @@ def test_dotty_uncalibrated_9():
                                           'Testing/Data/calib-ucl-circles/calib.left.intrinsics.txt',
                                           'Testing/Data/calib-ucl-circles/calib.left.distortion.txt',
                                           )
-    assert(404 == number_of_points)
+    assert(403 == number_of_points)
 
 
 def test_dotty_uncalibrated_10():
@@ -189,7 +190,7 @@ def test_dotty_uncalibrated_15():
                                           'Testing/Data/calib-ucl-circles/calib.left.intrinsics.txt',
                                           'Testing/Data/calib-ucl-circles/calib.left.distortion.txt',
                                           )
-    assert(363 == number_of_points)
+    assert(358 == number_of_points)
 
 
 def test_dotty_uncalibrated_16():
@@ -197,7 +198,7 @@ def test_dotty_uncalibrated_16():
                                           'Testing/Data/calib-ucl-circles/calib.right.intrinsics.txt',
                                           'Testing/Data/calib-ucl-circles/calib.right.distortion.txt',
                                           )
-    assert(364 == number_of_points)
+    assert(363 == number_of_points)
 
 
 def test_dotty_uncalibrated_17():
@@ -205,7 +206,7 @@ def test_dotty_uncalibrated_17():
                                           'Testing/Data/calib-ucl-circles/calib.left.intrinsics.txt',
                                           'Testing/Data/calib-ucl-circles/calib.left.distortion.txt',
                                           )
-    assert(380 == number_of_points)
+    assert(382 == number_of_points)
 
 
 def test_dotty_uncalibrated_18():
@@ -213,7 +214,7 @@ def test_dotty_uncalibrated_18():
                                           'Testing/Data/calib-ucl-circles/calib.right.intrinsics.txt',
                                           'Testing/Data/calib-ucl-circles/calib.right.distortion.txt',
                                           )
-    assert(371 == number_of_points)
+    assert(373 == number_of_points)
 
 
 def test_dotty_uncalibrated_19():
@@ -229,5 +230,5 @@ def test_dotty_uncalibrated_20():
                                           'Testing/Data/calib-ucl-circles/calib.right.intrinsics.txt',
                                           'Testing/Data/calib-ucl-circles/calib.right.distortion.txt',
                                           )
-    assert(346 == number_of_points)
+    assert(345 == number_of_points)
 
