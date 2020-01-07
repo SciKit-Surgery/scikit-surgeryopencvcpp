@@ -82,7 +82,7 @@ def test_dotty_uncalibrated_1():
                                           'Testing/Data/calib-ucl-circles/calib.left.intrinsics.txt',
                                           'Testing/Data/calib-ucl-circles/calib.left.distortion.txt',
                                           )
-    assert(374 == number_of_points)
+    assert(373 == number_of_points)
 
 
 def test_dotty_uncalibrated_2():
@@ -106,7 +106,7 @@ def test_dotty_uncalibrated_4():
                                           'Testing/Data/calib-ucl-circles/calib.right.intrinsics.txt',
                                           'Testing/Data/calib-ucl-circles/calib.right.distortion.txt',
                                           )
-    assert(364 == number_of_points)
+    assert(367 == number_of_points)
 
 
 def test_dotty_uncalibrated_5():
@@ -114,7 +114,7 @@ def test_dotty_uncalibrated_5():
                                           'Testing/Data/calib-ucl-circles/calib.left.intrinsics.txt',
                                           'Testing/Data/calib-ucl-circles/calib.left.distortion.txt',
                                           )
-    assert(354 == number_of_points)
+    assert(355 == number_of_points)
 
 
 def test_dotty_uncalibrated_6():
@@ -186,7 +186,7 @@ def test_dotty_uncalibrated_14():
                                           'Testing/Data/calib-ucl-circles/calib.right.intrinsics.txt',
                                           'Testing/Data/calib-ucl-circles/calib.right.distortion.txt',
                                           )
-    assert(354 == number_of_points)
+    assert(352 == number_of_points)
 
 
 def test_dotty_uncalibrated_15():
@@ -194,7 +194,7 @@ def test_dotty_uncalibrated_15():
                                           'Testing/Data/calib-ucl-circles/calib.left.intrinsics.txt',
                                           'Testing/Data/calib-ucl-circles/calib.left.distortion.txt',
                                           )
-    assert(358 == number_of_points)
+    assert(360 == number_of_points)
 
 
 def test_dotty_uncalibrated_16():
@@ -210,7 +210,7 @@ def test_dotty_uncalibrated_17():
                                           'Testing/Data/calib-ucl-circles/calib.left.intrinsics.txt',
                                           'Testing/Data/calib-ucl-circles/calib.left.distortion.txt',
                                           )
-    assert(382 == number_of_points)
+    assert(381 == number_of_points)
 
 
 def test_dotty_uncalibrated_18():
@@ -234,5 +234,5 @@ def test_dotty_uncalibrated_20():
                                           'Testing/Data/calib-ucl-circles/calib.right.intrinsics.txt',
                                           'Testing/Data/calib-ucl-circles/calib.right.distortion.txt',
                                           )
-    assert(345 == number_of_points)
+    assert(346 == number_of_points)
 
