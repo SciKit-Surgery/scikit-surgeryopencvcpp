@@ -186,6 +186,13 @@ if(NOT DEFINED BOOST_ROOT AND NOT SKSURGERYOPENCVCPP_USE_SYSTEM_Boost)
            COMMAND ${CMAKE_COMMAND} -E copy_directory "<SOURCE_DIR>/boost" "<INSTALL_DIR>/${_boost_install_include_dir}")
   endif()
 
+  message(STATUS "Matt, _build_cmd=${_build_cmd}")
+  message(STATUS "Matt, _shell_extension=${_shell_extension}")
+  message(STATUS "Matt, _boost_with_toolset=${_boost_with_toolset}")
+  message(STATUS "Matt, _boost_libs=${_boost_libs}")
+  message(STATUS "Matt, _python_version=${_python_version}")
+  message(STATUS "Matt, _python_root=${_python_root}")
+
   ExternalProject_Add(${proj}
     LIST_SEPARATOR ^^
     PREFIX ${proj_CONFIG}
