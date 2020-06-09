@@ -23,7 +23,7 @@
 #ifndef DOCSTRINGS_H
 #define DOCSTRINGS_H
 
-auto hartley_traingulate_docstring = R"
+auto hartley_traingulate_docstring = R"(
 Triangulates a vector of un-distorted (i.e. already correction for distortion) 2D point pairs back into 3D.
  
 From:
@@ -51,9 +51,9 @@ Taken from: http://geomalgorithms.com/a07-_distance.html
 :param leftToRightRotationMatrix: [3x3] matrix representing the rotation between camera axes
 :param leftToRightTranslationVector: [3x1] translation between camera origins
 :return: [Nx3] matrix of triangulated points.
-";
+)";
 
-auto stoyanov_disparity_docstring = R"
+auto stoyanov_disparity_docstring = R"(
 Gets a disparity map image.
 :param leftImage: usually RGB image
 :param rightImage: usually RGB image
@@ -65,9 +65,9 @@ Gets the matching points in left images.
 :param leftImage: usually RGB image
 :param rightImage: usually RGB image
 :return: Nx4 matrix, where the columns are x_left, y_left, x_right, y_right, i.e. 2D pixel locations.
-";
+)";
 
-auto stoyanov_recon_docstring = R"
+auto stoyanov_recon_docstring = R"(
 Does full triangulation of matched points, returning a point cloud.
 :param leftImage: usually RGB image
 :param leftCameraMatrix: 3x3 matrix containing fx, fy, cx, cy
@@ -77,25 +77,25 @@ Does full triangulation of matched points, returning a point cloud.
 :param leftToRightTranslationVector: 3x1 translation column vector
 :param useHartley: if false, uses midpoint method, if true, uses hartley. See sksTriangulate.h.
 :return: Nx7 matrix, where the columns are X,Y,Z (3D triangulated point), x_left, y_left, x_right, y_right (2D matches).
-";
+)";
 
-auto mask_points_docstring = R"
+auto mask_points_docstring = R"(
 Returns points that occur at locations with non-zero pixels in image.
 
 :param points: [Nx2] matrix of 2D points, x, y, as doubles.
 :param mask: image
 :return: [Mx2] matrix of masked points, x, y, as doubles.
-";
+)";
 
-auto mask_stereo_points_docstring = R"
+auto mask_stereo_points_docstring = R"(
 Returns points that occur at locations with non-zero pixels in both leftImage and rightImage.
 :param points: [Nx4] matrix of 2D points, where each row is left_x, left_y, right_x, right_y, as doubles.
 :param leftMask: image
 :param rightMask: image
 :return: [Mx4] matrix of masked points as doubles.
-";
+)";
 
-auto extract_dots_docstring = R"
+auto extract_dots_docstring = R"(
 Extracts calibration points from an image of dots.
 
 In this method, we pass in a distorted image. This method is
@@ -116,6 +116,7 @@ and so are easy to identify and use as fiducials for a homography.
 :param distortionCoefficients: good guess of the distortion coefficients
 :param gridPoints: [nx6] array of rows of id, x_pix, y_pix, x_mm, y_mm, z_mm reference point locations
 :param indexesOfFourReferencePoints: [4x1] list of exactly 4 point indexes.
-:return: [nx6] array of rows of id, x_pix, y_pix, x_mm, y_mm, z_mm of detected point locations";
+:return: [nx6] array of rows of id, x_pix, y_pix, x_mm, y_mm, z_mm of detected point locations
+)";
 
 #endif
