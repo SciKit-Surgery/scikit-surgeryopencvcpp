@@ -74,9 +74,8 @@ namespace sks
     boost::python::def("triangulate_points_using_hartley", TriangulatePointsUsingHartley, hartley_triangulate_docstring);
     boost::python::def("triangulate_points_using_midpoint", TriangulatePointsUsingMidpointOfShortestDistance, midpoint_triangulate_docstring);
     boost::python::def("compute_disparity_using_stoyanov", ComputeDisparityUsingStoyanov, stoyanov_disparity_docstring);
-    boost::python::def("match_points_using_stoyanov", MatchPointsUsingStoyanov);
-    boost::python::def("reconstruct_points_using_stoyanov", ReconstructPointsUsingStoyanov,
-                       "");
+    boost::python::def("match_points_using_stoyanov", MatchPointsUsingStoyanov, stoyanov_match_docstring);
+    boost::python::def("reconstruct_points_using_stoyanov", ReconstructPointsUsingStoyanov, stoyanov_recon_docstring);
     boost::python::def("mask_points", MaskPoints);
     boost::python::def("mask_stereo_points", MaskStereoPoints);
     boost::python::def("extract_dots", ExtractDots);
