@@ -47,6 +47,12 @@ environment:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       COMPILER: "Visual Studio 15 2017 Win64"
       MB_PYTHON: "C:/Python37-x64"
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      COMPILER: "Visual Studio 15 2017"
+      MB_PYTHON: "C:/Python38"
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      COMPILER: "Visual Studio 15 2017 Win64"
+      MB_PYTHON: "C:/Python38-x64"
 
 matrix:
   # This is so that if any of the above builds fails, then the whole build fails early.
