@@ -31,7 +31,7 @@ jobs:
         with:
           submodules: "true"
       - uses: microsoft/setup-msbuild@v1.0.0
-      - uses: actions/setup-python@v1.1.1
+      - uses: actions/setup-python@v2.2.1
         with:
           python-version: ${{ matrix.python-ver }}
           architecture: ${{ matrix.architecture }}
