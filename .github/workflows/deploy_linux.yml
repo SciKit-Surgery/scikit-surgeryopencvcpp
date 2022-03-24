@@ -1,8 +1,8 @@
 name: Linux Deploy 
-on:
-  push:
-    tags:
-    - v*
+on: [push]
+  # push:
+  #   tags:
+  #     - v*
 
 env:
   DO_PYTHON_BUILD: true
@@ -56,9 +56,9 @@ jobs:
 
           install_run $PLAT
 
-      - name: deploy
-        run: |
-          pip install twine
-          twine upload --repository pypi -u __token__ -p ${{ secrets.PYPI_API_TOKEN }} --skip-existing wheelhouse/*
+      # - name: deploy
+      #   run: |
+      #     pip install twine
+      #     twine upload --repository pypi -u __token__ -p ${{ secrets.PYPI_API_TOKEN }} --skip-existing wheelhouse/*
 
 

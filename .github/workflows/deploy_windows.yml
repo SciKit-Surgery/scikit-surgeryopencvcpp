@@ -1,9 +1,9 @@
 name: Windows Deploy
 
-on:
-  push:
-    tags:
-      - v*
+on: [push]
+  # push:
+  #   tags:
+  #     - v*
 
 jobs:
   build:
@@ -43,7 +43,7 @@ jobs:
           cmake -G "${{ matrix.COMPILER }}" -DBUILD_Python_PyBind:BOOL=ON -DCMAKE_BUILD_TYPE:String=Release --config Release ..
           cmake --build . --config Release
 
-      - name: deploy
-        run: |
-          pip install twine
-          twine upload --repository pypi -u __token__ -p ${{ secrets.PYPI_API_TOKEN }} --skip-existing dist/*
+      # - name: deploy
+      #   run: |
+      #     pip install twine
+      #     twine upload --repository pypi -u __token__ -p ${{ secrets.PYPI_API_TOKEN }} --skip-existing dist/*
