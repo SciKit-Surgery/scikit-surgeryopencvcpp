@@ -40,8 +40,8 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake -G "${{ matrix.COMPILER }}" -DBUILD_SUPERBUILD:BOOL=ON -DBUILD_TESTING:BOOL=ON -DCMAKE_BUILD_TYPE:String=Release ..
-          cmake --build .
+          cmake -G "${{ matrix.COMPILER }}" -DBUILD_SUPERBUILD:BOOL=ON -DBUILD_TESTING:BOOL=ON -DCMAKE_BUILD_TYPE:String=Release  --config Release ..
+          cmake --build --config Release .
 
       # - name: deploy
       #   run: |
