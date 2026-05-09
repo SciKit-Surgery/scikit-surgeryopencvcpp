@@ -14,8 +14,12 @@ option(BUILD_TESTING "Build C++ unit tests" OFF)
 include(FetchContent)
 
 # --- OpenCV (static, minimal modules) ---
+# BUILD_LIST is the authoritative way to restrict which modules are built.
+# Only modules in this list (and their dependencies) will be configured.
+set(BUILD_LIST "core,imgproc,calib3d,features2d,imgcodecs" CACHE STRING "" FORCE)
+
+# Static build, no apps/tests/docs
 set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
-set(BUILD_LIST "core,imgproc,calib3d,features2d,imgcodecs,stereo" CACHE STRING "" FORCE)
 set(BUILD_opencv_apps OFF CACHE BOOL "" FORCE)
 set(BUILD_opencv_python3 OFF CACHE BOOL "" FORCE)
 set(BUILD_opencv_python2 OFF CACHE BOOL "" FORCE)
@@ -23,16 +27,14 @@ set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(BUILD_PERF_TESTS OFF CACHE BOOL "" FORCE)
 set(BUILD_DOCS OFF CACHE BOOL "" FORCE)
-set(BUILD_opencv_highgui OFF CACHE BOOL "" FORCE)
-set(BUILD_opencv_videoio OFF CACHE BOOL "" FORCE)
-set(BUILD_opencv_video OFF CACHE BOOL "" FORCE)
-set(BUILD_opencv_ml OFF CACHE BOOL "" FORCE)
-set(BUILD_opencv_dnn OFF CACHE BOOL "" FORCE)
-set(BUILD_opencv_flann OFF CACHE BOOL "" FORCE)
-set(BUILD_opencv_photo OFF CACHE BOOL "" FORCE)
-set(BUILD_opencv_stitching OFF CACHE BOOL "" FORCE)
-set(BUILD_opencv_objdetect OFF CACHE BOOL "" FORCE)
-set(BUILD_opencv_gapi OFF CACHE BOOL "" FORCE)
+set(BUILD_JAVA OFF CACHE BOOL "" FORCE)
+set(BUILD_opencv_java_bindings_generator OFF CACHE BOOL "" FORCE)
+set(BUILD_opencv_python_bindings_generator OFF CACHE BOOL "" FORCE)
+set(BUILD_opencv_python_tests OFF CACHE BOOL "" FORCE)
+set(BUILD_opencv_ts OFF CACHE BOOL "" FORCE)
+set(BUILD_opencv_world OFF CACHE BOOL "" FORCE)
+
+# Disable all optional I/O and hardware backends
 set(WITH_FFMPEG OFF CACHE BOOL "" FORCE)
 set(WITH_GSTREAMER OFF CACHE BOOL "" FORCE)
 set(WITH_V4L OFF CACHE BOOL "" FORCE)
@@ -51,22 +53,20 @@ set(WITH_ADE OFF CACHE BOOL "" FORCE)
 set(WITH_ITT OFF CACHE BOOL "" FORCE)
 set(WITH_EIGEN OFF CACHE BOOL "" FORCE)
 set(WITH_OPENCL OFF CACHE BOOL "" FORCE)
+set(WITH_OPENCL_SVM OFF CACHE BOOL "" FORCE)
+set(WITH_OPENCLAMDFFT OFF CACHE BOOL "" FORCE)
+set(WITH_OPENCLAMDBLAS OFF CACHE BOOL "" FORCE)
+set(OPENCV_DNN_OPENCL OFF CACHE BOOL "" FORCE)
 set(WITH_IPP OFF CACHE BOOL "" FORCE)
 set(WITH_LAPACK OFF CACHE BOOL "" FORCE)
+set(WITH_OBSENSOR OFF CACHE BOOL "" FORCE)
+set(WITH_PNG ON CACHE BOOL "" FORCE)
+set(BUILD_PNG ON CACHE BOOL "" FORCE)
+set(BUILD_ZLIB ON CACHE BOOL "" FORCE)
 set(OPENCV_GENERATE_PKGCONFIG OFF CACHE BOOL "" FORCE)
 set(OPENCV_ENABLE_NONFREE OFF CACHE BOOL "" FORCE)
 set(CV_DISABLE_OPTIMIZATION OFF CACHE BOOL "" FORCE)
 set(ENABLE_PRECOMPILED_HEADERS OFF CACHE BOOL "" FORCE)
-
-# opencv_contrib (for stereo module)
-FetchContent_Declare(
-  opencv_contrib
-  GIT_REPOSITORY https://github.com/opencv/opencv_contrib.git
-  GIT_TAG        4.10.0
-  GIT_SHALLOW    TRUE
-)
-FetchContent_MakeAvailable(opencv_contrib)
-set(OPENCV_EXTRA_MODULES_PATH "${opencv_contrib_SOURCE_DIR}/modules" CACHE PATH "" FORCE)
 
 FetchContent_Declare(
   opencv

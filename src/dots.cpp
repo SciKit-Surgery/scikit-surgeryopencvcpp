@@ -12,7 +12,7 @@
 
 =============================================================================*/
 
-#include "dot_detection.h"
+#include "dots.h"
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/features2d.hpp>
 #include <opencv2/calib3d.hpp>

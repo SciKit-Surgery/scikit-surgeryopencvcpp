@@ -16,9 +16,8 @@
 #include "ndarray_converter.h"
 
 #include "triangulate.h"
-#include "stoyanov2010.h"
 #include "masking.h"
-#include "dot_detection.h"
+#include "dots.h"
 #include "exception.h"
 
 #include <sstream>
@@ -59,25 +58,6 @@ PYBIND11_MODULE(sksurgeryopencvpython, m)
         "Triangulate undistorted 2D point pairs using midpoint of shortest distance",
         py::arg("points"), py::arg("left_intrinsics"), py::arg("right_intrinsics"),
         py::arg("rotation_matrix"), py::arg("translation_vector"));
-
-  // Surface reconstruction (Stoyanov 2010)
-  m.def("compute_disparity_using_stoyanov",
-        &sks::ComputeDisparityUsingStoyanov,
-        "Compute disparity map using quasi-dense stereo matching",
-        py::arg("left_image"), py::arg("right_image"));
-
-  m.def("match_points_using_stoyanov",
-        &sks::MatchPointsUsingStoyanov,
-        "Get matching points between stereo image pair",
-        py::arg("left_image"), py::arg("right_image"));
-
-  m.def("reconstruct_points_using_stoyanov",
-        &sks::ReconstructPointsUsingStoyanov,
-        "Full stereo reconstruction returning Nx7 point cloud",
-        py::arg("left_image"), py::arg("left_intrinsics"),
-        py::arg("right_image"), py::arg("right_intrinsics"),
-        py::arg("rotation_matrix"), py::arg("translation_vector"),
-        py::arg("use_hartley"));
 
   // Masking
   m.def("mask_points",

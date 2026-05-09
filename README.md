@@ -9,7 +9,6 @@ developed at the [Wellcome EPSRC Centre for Interventional and Surgical Sciences
 ## Features
 
 * Stereo triangulation (Hartley/Zisserman SVD method and midpoint-of-shortest-distance)
-* Surface reconstruction using [Stoyanov's MICCAI 2010 method](https://doi.org/10.1007/978-3-642-15705-9_34) via OpenCV's quasi-dense stereo
 * Calibration dot/fiducial detection
 * Point masking utilities
 

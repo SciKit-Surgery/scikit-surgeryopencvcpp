@@ -5,7 +5,6 @@ scikit-surgeryopencvcpp is a C++ library providing image-guided surgery algorith
 ## Key Capabilities
 
 - Stereo triangulation (Hartley/Zisserman SVD method and midpoint-of-shortest-distance)
-- Surface reconstruction (Stoyanov MICCAI 2010 quasi-dense stereo method)
 - Dot/fiducial detection for camera calibration
 - Image masking utilities for point filtering
 

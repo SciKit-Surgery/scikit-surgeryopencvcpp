@@ -12,8 +12,8 @@
 
 =============================================================================*/
 
-#ifndef sks_dot_detection_h
-#define sks_dot_detection_h
+#ifndef sks_dots_h
+#define sks_dots_h
 
 #include <opencv2/core.hpp>
 
