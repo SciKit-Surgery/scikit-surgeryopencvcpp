@@ -1,107 +1,69 @@
 # scikit-surgeryopencvcpp
 
-[![Build Status](https://travis-ci.com/UCL/scikit-surgeryopencvcpp.svg?branch=master)](https://travis-ci.com/UCL/scikit-surgeryopencvcpp)
-[![Build status](https://ci.appveyor.com/api/projects/status/jbs1qln3id8ln25o/branch/master?svg=true
-)](https://ci.appveyor.com/project/MattClarkson/scikit-surgeryopencvcpp/)
+Image-guided surgery functions, in C++, using OpenCV, wrapped in Python.
 
+Part of the [SNAPPY](https://weisslab.cs.ucl.ac.uk/WEISS/PlatformManagement/SNAPPY/wikis/home) software project,
+developed at the [Wellcome EPSRC Centre for Interventional and Surgical Sciences](http://www.ucl.ac.uk/weiss),
+[University College London (UCL)](http://www.ucl.ac.uk/).
 
-scikit-surgeryopencvcpp implements image guided surgery algorithms, using [OpenCV](https://opencv.org/), in C++ and wrapped in Python.
+## Features
 
-scikit-surgeryopencvcpp is part of the 
-[SNAPPY](https://weisslab.cs.ucl.ac.uk/WEISS/PlatformManagement/SNAPPY/wikis/home) software project, 
-developed at the [Wellcome EPSRC Centre for Interventional and Surgical Sciences](http://www.ucl.ac.uk/weiss), 
-part of [University College London (UCL)](http://www.ucl.ac.uk/).
+* Stereo triangulation (Hartley/Zisserman SVD method and midpoint-of-shortest-distance)
+* Surface reconstruction using [Stoyanov's MICCAI 2010 method](https://doi.org/10.1007/978-3-642-15705-9_34) via OpenCV's quasi-dense stereo
+* Calibration dot/fiducial detection
+* Point masking utilities
 
+## Installing
 
-# Features
-
-* Support for Python Wheels, thanks to [Matthew Brett's multibuild](https://github.com/matthew-brett/multibuild).
-* Triangulation using [Hartley and Zisserman's method](http://www.morethantechnical.com/2012/01/04/simple-triangulation-with-opencv-from-harley-zisserman-w-code), and the [midpoint of two lines](http://geomalgorithms.com/a07-_distance.html).
-* Surface reconstruction, using [Dan Stoyanov's](https://iris.ucl.ac.uk/iris/browse/profile?upi=DSTOY26) [MICCAI 2010 method](https://link.springer.com/chapter/10.1007/978-3-642-15705-9_34), implemented in [OpenCV](http://www.opencv.org) by [Dimitris Psychogyios](https://github.com/dimitrisPs).
-
-# Installing
-
-You can pip install the latest Python package as follows:
-
-```
+```bash
 pip install scikit-surgeryopencvcpp
 ```
 
-# Examples
+## Building from source
 
-## Surface Reconstruction
+Requires CMake 3.15+ and a C++17 compiler. All dependencies (OpenCV, pybind11) are fetched automatically.
+
+```bash
+pip install build
+python -m build --wheel
+```
+
+Or for development:
+
+```bash
+cmake -B build -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release
+cmake --build build --config Release --parallel
+ctest --test-dir build --build-config Release --output-on-failure
+```
+
+## Python API
+
 ```python
-pip install pptk opencv-python scikit-surgeryopencvcpp
-python
-import sksurgeryopencvpython as skscv
-import pptk
 import numpy as np
-import cv2
-left_image = cv2.imread('Testing/Data/reconstruction/f7_dynamic_deint_L_0100.png')
-right_image = cv2.imread('Testing/Data/reconstruction/f7_dynamic_deint_R_0100.png')
-left_intrinsics = np.loadtxt('Testing/Data/reconstruction/calib.left.intrinsic.txt')
-right_intrinsics = np.loadtxt('Testing/Data/reconstruction/calib.right.intrinsic.txt')
-l2r = np.loadtxt('Testing/Data/reconstruction/calib.l2r.4x4')
-rotation_matrix = l2r[0:3, 0:3]
-translation_vector = l2r[0:3, 3:4]
-points = skscv.reconstruct_points_using_stoyanov(left_image, left_intrinsics, right_image, right_intrinsics, rotation_matrix, translation_vector, False)
-points_3d = points[:,0:3]
-v = pptk.viewer(points_3d)
+import sksurgeryopencvpython as sks
+
+# Triangulate stereo point pairs
+points_3d = sks.triangulate_points_using_hartley(
+    image_points,       # Nx4 array (left_x, left_y, right_x, right_y)
+    left_intrinsics,    # 3x3 camera matrix
+    right_intrinsics,   # 3x3 camera matrix
+    rotation_matrix,    # 3x3 left-to-right rotation
+    translation_vector  # 3x1 left-to-right translation
+)
 ```
 
-# Developing
+## Contributing
 
-## Cloning
+1. Raise an issue on GitHub
+2. Fork the repository
+3. Create a feature branch: `<issue-number>-<short-description>`
+4. Submit a pull request
 
-You can clone the repository using the following command:
-
-```
-git clone https://github.com/UCL/scikit-surgeryopencvcpp.git
-```
-
-
-## Build instructions
-
-Still not for the faint-hearted. It depends if you are a C++ developer familiar
-with CMake or a hybrid C++/Python developer primarily interested in writing
-Python extensions.
-
-The simplest advice really is to read ```appveyor.yml```, as this will always
-be up to date. 
-
-
-## Preferred Branching Workflow for Contributions.
-
-We welcome contributions to this project. Please use the following workflow.
-
- 1. Raise issue in this project's Github Issue Tracker.
- 2. Fork repository.
- 3. Create a feature branch called ```<issue-number>-<some-short-description>```
-    replacing ```<issue-number>``` with the Github issue number
-    and ```<some-short-description>``` with your description of the thing you are implementing.
- 4. Code on that branch.
- 5. Push to your remote when ready.
- 6. Create pull request.
- 7. We will review code, suggest and required changes and merge to master when it is ready.
-
-
-# Dashboards
-
-In addition to Travis and Appveyor builds, C++ results are also 
-submitted to a public [CDash](http://cdash.cmiclab.cs.ucl.ac.uk/index.php?project=scikit-surgeryopencvcpp) dashboard.
-
-
-# Licensing and copyright
+## License
 
 Copyright 2018 University College London.
-scikit-surgeryopencvcpp is released under the BSD-3 license. 
-Please see the [license file](https://github.com/UCL/scikit-surgeryopencvcpp/blob/master/LICENSE.txt) for details.
+Released under the [BSD-3 license](LICENSE.txt).
 
-
-# Acknowledgements
+## Acknowledgements
 
 Supported by [Wellcome](https://wellcome.ac.uk/) and the [EPSRC](https://www.epsrc.ac.uk/).
-
-The project was generated, using 
-[CMakeCatchTemplate](https://github.com/MattClarkson/CMakeCatchTemplate) 
-and [CMakeTemplateRenamer](https://github.com/MattClarkson/CMakeTemplateRenamer).

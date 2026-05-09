@@ -1,0 +1,57 @@
+[build-system]
+requires = ["scikit-build-core>=0.10", "pybind11>=2.12"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "scikit-surgeryopencvcpp"
+version = "0.1.0"
+description = "Image-guided surgery functions, in C++, using OpenCV and wrapped in Python."
+readme = "README.md"
+license = "BSD-3-Clause"
+authors = [
+    { name = "Matt Clarkson", email = "m.clarkson@ucl.ac.uk" },
+]
+requires-python = ">=3.9"
+dependencies = ["numpy>=1.20"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Healthcare Industry",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: C++",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+]
+
+[project.urls]
+Homepage = "https://github.com/UCL/scikit-surgeryopencvcpp"
+Repository = "https://github.com/UCL/scikit-surgeryopencvcpp"
+
+[tool.scikit-build]
+cmake.minimum-version = "3.15"
+cmake.build-type = "Release"
+wheel.packages = []
+
+[tool.scikit-build.cmake.define]
+BUILD_TESTING = "OFF"
+
+[tool.cibuildwheel]
+build = "cp39-* cp310-* cp311-* cp312-* cp313-*"
+skip = "*-musllinux_*"
+test-requires = ["numpy"]
+test-command = "python -c \"import sksurgeryopencvpython; print('Import OK')\""
+
+[tool.cibuildwheel.linux]
+archs = ["x86_64"]
+
+[tool.cibuildwheel.macos]
+archs = ["x86_64", "arm64"]
+
+[tool.cibuildwheel.windows]
+archs = ["AMD64"]
