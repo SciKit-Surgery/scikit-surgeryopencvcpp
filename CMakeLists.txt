@@ -7,6 +7,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 option(BUILD_TESTING "Build C++ unit tests" OFF)
+option(BUILD_PYTHON_BINDINGS "Build Python pybind11 module" ON)
 
 # ===========================================================================
 # Dependencies via FetchContent
@@ -77,13 +78,15 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(opencv)
 
 # --- pybind11 ---
-FetchContent_Declare(
-  pybind11
-  GIT_REPOSITORY https://github.com/pybind/pybind11.git
-  GIT_TAG        v2.13.6
-  GIT_SHALLOW    TRUE
-)
-FetchContent_MakeAvailable(pybind11)
+if(BUILD_PYTHON_BINDINGS)
+  FetchContent_Declare(
+    pybind11
+    GIT_REPOSITORY https://github.com/pybind/pybind11.git
+    GIT_TAG        v2.13.6
+    GIT_SHALLOW    TRUE
+  )
+  FetchContent_MakeAvailable(pybind11)
+endif()
 
 # ===========================================================================
 # Library: sksurgeryopencvcpp (static)
@@ -93,7 +96,9 @@ add_subdirectory(src)
 # ===========================================================================
 # Python module
 # ===========================================================================
-add_subdirectory(src/python)
+if(BUILD_PYTHON_BINDINGS)
+  add_subdirectory(src/python)
+endif()
 
 # ===========================================================================
 # Tests
