@@ -70,6 +70,7 @@ jobs:
         env:
           CIBW_BUILD: "${{ matrix.python.version }}-*"
           CIBW_BUILD_VERBOSITY: 3
+          CIBW_BEFORE_TEST: "python -m zipfile -l {wheel}"
 
       - uses: actions/upload-artifact@v7
         if: success()
