@@ -63,28 +63,11 @@ jobs:
           path: wheelhouse/*.whl
 
   # =========================================================================
-  # Build source distribution
-  # =========================================================================
-  build-sdist:
-    name: Source Distribution
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Build sdist
-        run: pipx run build --sdist
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: sdist
-          path: dist/*.tar.gz
-
-  # =========================================================================
   # Publish to PyPI on tagged release
   # =========================================================================
   publish:
     name: Publish to PyPI
-    needs: [test-cpp, build-wheels, build-sdist]
+    needs: [test-cpp, build-wheels]
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     environment: pypi
@@ -97,10 +80,5 @@ jobs:
           pattern: wheels-*
           path: dist
           merge-multiple: true
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: sdist
-          path: dist
 
       - uses: pypa/gh-action-pypi-publish@release/v1
