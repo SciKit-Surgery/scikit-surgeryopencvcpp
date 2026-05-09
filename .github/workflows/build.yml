@@ -41,9 +41,11 @@ jobs:
 
   # =========================================================================
   # Build wheels for all platforms (Python 3.9-3.13)
+  # Only runs after C++ tests pass.
   # =========================================================================
   build-wheels:
     name: Wheels (${{ matrix.os }})
+    needs: [test-cpp]
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
