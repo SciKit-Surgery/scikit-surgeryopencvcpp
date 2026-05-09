@@ -21,21 +21,37 @@ namespace sks
 {
 
 /**
- * \brief Returns points at locations with non-zero pixels in the mask image.
+ * \brief Filters 2D points by a binary mask image, returning only those
+ * at locations where the mask is non-zero.
  *
- * \param points [Nx2] matrix of 2D points (x, y) as doubles
- * \param mask single-channel image
- * \return [Mx2] matrix of masked points
+ * For each point (x, y), checks whether the pixel at mask(y, x) is non-zero.
+ * Points that fall outside the mask image bounds are discarded.
+ *
+ * \param points cv::Mat [Nx2] CV_64FC1 matrix of 2D points, where each row
+ *        is (x, y) in pixel coordinates.
+ * \param mask cv::Mat single-channel (CV_8UC1) image used as the binary mask.
+ *        Non-zero pixels indicate valid regions.
+ * \return cv::Mat [Mx2] CV_64FC1 matrix containing only the points that
+ *         passed the mask test (M <= N).
  */
 cv::Mat MaskPoints(const cv::Mat& points, const cv::Mat& mask);
 
 /**
- * \brief Returns stereo point pairs at locations with non-zero pixels in both masks.
+ * \brief Filters stereo point pairs by left and right binary mask images.
  *
- * \param points [Nx4] matrix (left_x, left_y, right_x, right_y) as doubles
- * \param leftMask single-channel image
- * \param rightMask single-channel image
- * \return [Mx4] matrix of masked stereo points
+ * For each row (left_x, left_y, right_x, right_y), checks that both the
+ * left point falls on a non-zero pixel in leftMask and the right point
+ * falls on a non-zero pixel in rightMask. Points outside either mask's
+ * bounds are discarded.
+ *
+ * \param points cv::Mat [Nx4] CV_64FC1 matrix of stereo point pairs, where
+ *        each row is (left_x, left_y, right_x, right_y) in pixel coordinates.
+ * \param leftMask cv::Mat single-channel (CV_8UC1) mask for the left image.
+ *        Non-zero pixels indicate valid regions.
+ * \param rightMask cv::Mat single-channel (CV_8UC1) mask for the right image.
+ *        Non-zero pixels indicate valid regions.
+ * \return cv::Mat [Mx4] CV_64FC1 matrix containing only the stereo pairs
+ *         that passed both mask tests (M <= N).
  */
 cv::Mat MaskStereoPoints(const cv::Mat& points,
                          const cv::Mat& leftMask,
