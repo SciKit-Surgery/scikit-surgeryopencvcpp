@@ -130,22 +130,27 @@ PYBIND11_MODULE(sksurgeryopencvpython, m)
 
   m.def("extract_dots",
         &sks::ExtractDots,
-        "Extract calibration dot locations from a distorted camera image.\n\n"
+        "Extract calibration dot locations from a camera image.\n\n"
         "Detects a grid of circular dots, identifies four large fiducial dots, "
-        "computes a homography to a reference grid, and assigns grid IDs to "
-        "all detected dots.\n\n"
+        "warps to a canonical view, assigns grid IDs, and returns matched "
+        "dot locations with duplicate removal.\n\n"
         "Args:\n"
-        "    image: ndarray [HxW] uint8 - greyscale distorted image\n"
+        "    image: ndarray [HxW] uint8 - greyscale image\n"
         "    intrinsic_matrix: ndarray [3x3] float64 - camera intrinsics\n"
         "    distortion_coefficients: ndarray [1x5] float64 - (k1, k2, p1, p2, k3)\n"
         "    grid_points: ndarray [Nx6] float64 - reference grid "
         "(id, x_pix, y_pix, x_mm, y_mm, z_mm)\n"
         "    reference_point_indexes: ndarray [4x1] int32 - indexes of four "
-        "fiducial dots in grid_points\n\n"
+        "fiducial dots in grid_points\n"
+        "    reference_image_width: int - width of canonical warped image\n"
+        "    reference_image_height: int - height of canonical warped image\n"
+        "    is_distorted: bool - True if input has lens distortion (default True)\n\n"
         "Returns:\n"
         "    ndarray [Mx6] float64 - detected dots "
         "(id, x_pix, y_pix, x_mm, y_mm, z_mm)",
         py::arg("image"), py::arg("intrinsic_matrix"),
         py::arg("distortion_coefficients"), py::arg("grid_points"),
-        py::arg("reference_point_indexes"));
+        py::arg("reference_point_indexes"),
+        py::arg("reference_image_width"), py::arg("reference_image_height"),
+        py::arg("is_distorted") = true);
 }
