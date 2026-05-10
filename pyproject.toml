@@ -36,9 +36,12 @@ Repository = "https://github.com/UCL/scikit-surgeryopencvcpp"
 cmake.version = ">=3.15"
 cmake.build-type = "Release"
 wheel.packages = []
+wheel.exclude = ["include/**", "lib/**", "lib64/**", "bin/**", "share/**", "etc/**", "x64/**", "opencv_unused/**"]
+install.strip = false
 
 [tool.scikit-build.cmake.define]
 BUILD_TESTING = "OFF"
+BUILD_PYTHON_BINDINGS = "ON"
 
 [tool.cibuildwheel]
 build = "cp39-* cp310-* cp311-* cp312-* cp313-*"

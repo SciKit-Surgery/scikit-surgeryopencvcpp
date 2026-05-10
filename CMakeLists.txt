@@ -39,6 +39,7 @@ set(BUILD_opencv_python_bindings_generator OFF CACHE BOOL "" FORCE)
 set(BUILD_opencv_python_tests OFF CACHE BOOL "" FORCE)
 set(BUILD_opencv_ts OFF CACHE BOOL "" FORCE)
 set(BUILD_opencv_world OFF CACHE BOOL "" FORCE)
+set(OPENCV_PYTHON_SKIP_DETECTION ON CACHE BOOL "" FORCE)
 
 # Disable all optional I/O and hardware backends
 set(WITH_FFMPEG OFF CACHE BOOL "" FORCE)
@@ -75,6 +76,17 @@ set(CV_DISABLE_OPTIMIZATION OFF CACHE BOOL "" FORCE)
 set(CPU_DISPATCH "" CACHE STRING "" FORCE)
 set(ENABLE_PRECOMPILED_HEADERS OFF CACHE BOOL "" FORCE)
 
+# Disable OpenCV's install rules to prevent polluting our wheel
+set(INSTALL_CREATE_DISTRIB OFF CACHE BOOL "" FORCE)
+set(OPENCV_BIN_INSTALL_PATH "opencv_unused" CACHE STRING "" FORCE)
+set(OPENCV_LIB_INSTALL_PATH "opencv_unused" CACHE STRING "" FORCE)
+set(OPENCV_3P_LIB_INSTALL_PATH "opencv_unused" CACHE STRING "" FORCE)
+set(OPENCV_INCLUDE_INSTALL_PATH "opencv_unused" CACHE STRING "" FORCE)
+set(OPENCV_OTHER_INSTALL_PATH "opencv_unused" CACHE STRING "" FORCE)
+set(OPENCV_LICENSES_INSTALL_PATH "opencv_unused" CACHE STRING "" FORCE)
+set(OPENCV_SAMPLES_SRC_INSTALL_PATH "opencv_unused" CACHE STRING "" FORCE)
+set(OPENCV_CONFIG_INSTALL_PATH "opencv_unused" CACHE STRING "" FORCE)
+
 FetchContent_Declare(
   opencv
   GIT_REPOSITORY https://github.com/opencv/opencv.git
@@ -85,6 +97,9 @@ FetchContent_MakeAvailable(opencv)
 
 # --- pybind11 ---
 if(BUILD_PYTHON_BINDINGS)
+  # Find Python first so pybind11 uses the correct interpreter
+  find_package(Python REQUIRED COMPONENTS Interpreter Development.Module NumPy)
+
   FetchContent_Declare(
     pybind11
     GIT_REPOSITORY https://github.com/pybind/pybind11.git
