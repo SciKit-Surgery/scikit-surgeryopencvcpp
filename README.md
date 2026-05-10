@@ -20,17 +20,42 @@ pip install scikit-surgeryopencvcpp
 
 ## Building from source
 
-Requires CMake 3.15+ and a C++17 compiler. All dependencies (OpenCV, pybind11) are fetched automatically.
+Requires CMake 3.15+ and a C++17 compiler. All dependencies (OpenCV, pybind11) are fetched automatically via CMake FetchContent.
+
+### Build a wheel (for pip install)
 
 ```bash
 pip install build
 python -m build --wheel
 ```
 
-Or for development:
+This produces a wheel in `dist/` that you can install with:
 
 ```bash
-cmake -B build -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release
+pip install dist/scikit_surgeryopencvcpp-*.whl
+```
+
+For a faster development cycle (reuses your existing build artifacts):
+
+```bash
+pip wheel . -v --no-build-isolation
+```
+
+### C++ development (no Python)
+
+```bash
+cmake -B build -DBUILD_TESTING=ON -DBUILD_PYTHON_BINDINGS=OFF -DCMAKE_BUILD_TYPE=Release
+cmake --build build --config Release --parallel
+ctest --test-dir build --build-config Release --output-on-failure
+```
+
+### Full build with Python bindings
+
+Requires NumPy and pybind11 in your environment:
+
+```bash
+pip install numpy pybind11
+cmake -B build -DBUILD_TESTING=ON -DBUILD_PYTHON_BINDINGS=ON -DCMAKE_BUILD_TYPE=Release
 cmake --build build --config Release --parallel
 ctest --test-dir build --build-config Release --output-on-failure
 ```
