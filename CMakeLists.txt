@@ -90,7 +90,7 @@ set(OPENCV_CONFIG_INSTALL_PATH "opencv_unused" CACHE STRING "" FORCE)
 FetchContent_Declare(
   opencv
   GIT_REPOSITORY https://github.com/opencv/opencv.git
-  GIT_TAG        4.10.0
+  GIT_TAG        4.11.0
   GIT_SHALLOW    TRUE
 )
 FetchContent_MakeAvailable(opencv)
