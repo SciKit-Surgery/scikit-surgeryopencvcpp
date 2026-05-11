@@ -4,7 +4,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "scikit-surgeryopencvcpp"
-version = "0.1.0"
+version = "0.2.0"
 description = "Image-guided surgery functions, in C++, using OpenCV and wrapped in Python."
 readme = "README.md"
 license = "BSD-3-Clause"
