@@ -21,7 +21,6 @@
 #include <cmath>
 #include <limits>
 #include <vector>
-#include <set>
 
 namespace sks
 {
@@ -54,14 +53,6 @@ struct FiducialPoint
   }
 };
 
-struct KeyPointSizeSorter
-{
-  bool operator()(const cv::KeyPoint& k1, const cv::KeyPoint& k2) const
-  {
-    return k1.size > k2.size;
-  }
-};
-
 cv::Ptr<cv::SimpleBlobDetector> CreateDetector()
 {
   cv::SimpleBlobDetector::Params params;
@@ -85,8 +76,6 @@ cv::Mat ExtractDots(
   const cv::Mat& distortionCoefficients,
   const cv::Mat& gridPoints,
   const cv::Mat& indexesOfFourReferencePoints,
-  int referenceImageWidth,
-  int referenceImageHeight,
   bool isDistorted
   )
 {
@@ -102,49 +91,69 @@ cv::Mat ExtractDots(
                         cv::ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY,
                         THRESHOLD_WINDOW_SIZE, THRESHOLD_OFFSET);
 
-  // Step 2: Detect blobs in the (possibly distorted) thresholded image
+  // Step 2: Single blob detection on the thresholded image
   cv::Ptr<cv::SimpleBlobDetector> detector = CreateDetector();
   std::vector<cv::KeyPoint> keypoints;
   detector->detect(thresholded, keypoints);
 
-  // Step 3: Undistort and re-detect if needed
-  cv::Mat undistortedImage;
-  std::vector<cv::KeyPoint> undistortedKeypoints;
-
-  if (isDistorted)
-  {
-    cv::undistort(smoothed, undistortedImage, intrinsicMatrix, distortionCoefficients);
-
-    cv::Mat undistortedThresholded;
-    cv::adaptiveThreshold(undistortedImage, undistortedThresholded, 255,
-                          cv::ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY,
-                          THRESHOLD_WINDOW_SIZE, THRESHOLD_OFFSET);
-
-    detector->detect(undistortedThresholded, undistortedKeypoints);
-  }
-  else
-  {
-    undistortedImage = smoothed;
-    undistortedKeypoints = keypoints;
-  }
-
-  // Need at least 5 points (4 fiducials + at least 1 other)
-  if (keypoints.size() <= 4 || undistortedKeypoints.size() <= 4)
+  int numberOfKeypoints = static_cast<int>(keypoints.size());
+  if (numberOfKeypoints <= 4)
   {
     return emptyResult;
   }
 
-  // Step 4: Find the four largest blobs (fiducials) in undistorted image
-  std::sort(undistortedKeypoints.begin(), undistortedKeypoints.end(),
-            KeyPointSizeSorter());
+  // Step 3: Extract keypoint coordinates (distorted image space) and sizes
+  std::vector<cv::Point2f> distortedPts(numberOfKeypoints);
+  std::vector<float> keypointSizes(numberOfKeypoints);
+  for (int i = 0; i < numberOfKeypoints; i++)
+  {
+    distortedPts[i] = keypoints[i].pt;
+    keypointSizes[i] = keypoints[i].size;
+  }
+
+  // Step 4: Get points in undistorted space for homography estimation
+  std::vector<cv::Point2f> ptsForHomography;
+  if (isDistorted)
+  {
+    cv::Mat distortedMat(numberOfKeypoints, 1, CV_32FC2);
+    for (int i = 0; i < numberOfKeypoints; i++)
+    {
+      distortedMat.at<cv::Vec2f>(i, 0) = cv::Vec2f(distortedPts[i].x,
+                                                     distortedPts[i].y);
+    }
+    cv::Mat undistortedMat;
+    cv::undistortPoints(distortedMat, undistortedMat,
+                        intrinsicMatrix, distortionCoefficients,
+                        cv::noArray(), intrinsicMatrix);
+    ptsForHomography.resize(numberOfKeypoints);
+    for (int i = 0; i < numberOfKeypoints; i++)
+    {
+      cv::Vec2f pt = undistortedMat.at<cv::Vec2f>(i, 0);
+      ptsForHomography[i] = cv::Point2f(pt[0], pt[1]);
+    }
+  }
+  else
+  {
+    ptsForHomography = distortedPts;
+  }
+
+  // Step 5: Sort by size and pick biggest 4 as fiducials
+  std::vector<int> sortedIndices(numberOfKeypoints);
+  for (int i = 0; i < numberOfKeypoints; i++) sortedIndices[i] = i;
+  std::sort(sortedIndices.begin(), sortedIndices.end(),
+            [&keypointSizes](int a, int b) {
+              return keypointSizes[a] < keypointSizes[b];
+            });
 
   std::vector<FiducialPoint> biggestFour;
-  biggestFour.emplace_back(undistortedKeypoints[0].pt.x, undistortedKeypoints[0].pt.y);
-  biggestFour.emplace_back(undistortedKeypoints[1].pt.x, undistortedKeypoints[1].pt.y);
-  biggestFour.emplace_back(undistortedKeypoints[2].pt.x, undistortedKeypoints[2].pt.y);
-  biggestFour.emplace_back(undistortedKeypoints[3].pt.x, undistortedKeypoints[3].pt.y);
+  for (int i = numberOfKeypoints - 4; i < numberOfKeypoints; i++)
+  {
+    int idx = sortedIndices[i];
+    biggestFour.emplace_back(ptsForHomography[idx].x,
+                             ptsForHomography[idx].y);
+  }
 
-  // Step 5: Classify as TL, TR, BL, BR based on centroid
+  // Step 6: Classify as TL, TR, BL, BR based on centroid
   double cx = 0, cy = 0;
   for (const auto& pt : biggestFour) { cx += pt.x; cy += pt.y; }
   cx /= 4.0; cy /= 4.0;
@@ -159,7 +168,7 @@ cv::Mat ExtractDots(
   // Sort by score: TL=0, TR=1, BL=2, BR=3
   std::sort(biggestFour.begin(), biggestFour.end());
 
-  // Step 6: Compute homography from detected fiducials to reference grid
+  // Step 7: Compute homography from undistorted fiducials to reference grid
   cv::Mat sourceFiducials = cv::Mat::zeros(4, 2, CV_64F);
   cv::Mat targetFiducials = cv::Mat::zeros(4, 2, CV_64F);
   for (int i = 0; i < 4; i++)
@@ -177,35 +186,21 @@ cv::Mat ExtractDots(
     return emptyResult;
   }
 
-  // Step 7: Warp undistorted image to canonical face-on view, re-detect
-  cv::Size refSize(referenceImageWidth, referenceImageHeight);
-  cv::Mat warped;
-  cv::warpPerspective(undistortedImage, warped, homography, refSize);
+  // Step 8: Warp all undistorted points into reference space using
+  // perspectiveTransform (no image warping needed)
+  std::vector<cv::Point2f> warpedPts;
+  cv::perspectiveTransform(ptsForHomography, warpedPts, homography);
 
-  cv::Mat warpedThresholded;
-  cv::adaptiveThreshold(warped, warpedThresholded, 255,
-                        cv::ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY,
-                        THRESHOLD_WINDOW_SIZE, THRESHOLD_OFFSET);
-
-  std::vector<cv::KeyPoint> warpedKeypoints;
-  detector->detect(warpedThresholded, warpedKeypoints);
-
-  int numberOfWarpedKeypoints = static_cast<int>(warpedKeypoints.size());
-  if (numberOfWarpedKeypoints == 0)
-  {
-    return emptyResult;
-  }
-
-  // Step 8: For each warped dot, find closest point in reference grid
-  std::vector<int> assignedGridIndex(numberOfWarpedKeypoints);
+  // Step 9: Match each warped point to the nearest reference grid point
+  std::vector<int> assignedGridIndex(numberOfKeypoints);
   double rmsError = 0;
 
-  for (int i = 0; i < numberOfWarpedKeypoints; i++)
+  for (int i = 0; i < numberOfKeypoints; i++)
   {
     double bestDist = std::numeric_limits<double>::max();
     int bestIdx = -1;
-    double wx = warpedKeypoints[i].pt.x;
-    double wy = warpedKeypoints[i].pt.y;
+    double wx = warpedPts[i].x;
+    double wy = warpedPts[i].y;
 
     for (int j = 0; j < gridPoints.rows; j++)
     {
@@ -222,72 +217,22 @@ cv::Mat ExtractDots(
     rmsError += std::sqrt(bestDist);
   }
 
-  rmsError /= static_cast<double>(numberOfWarpedKeypoints);
+  rmsError /= static_cast<double>(numberOfKeypoints);
 
   if (rmsError > RMS_TOLERANCE)
   {
     return emptyResult;
   }
 
-  // Step 9: Inverse-transform warped points back to undistorted coordinates
-  std::vector<cv::Point2f> warpedPoints;
-  cv::KeyPoint::convert(warpedKeypoints, warpedPoints);
-
-  cv::Mat homographyInv = homography.inv();
-  std::vector<cv::Point2f> undistortedPoints;
-  cv::perspectiveTransform(warpedPoints, undistortedPoints, homographyInv);
-
-  // Step 10: If distorted input, re-distort and match to original keypoints
-  std::vector<cv::Point2f> finalImagePoints(numberOfWarpedKeypoints);
-
-  if (isDistorted)
-  {
-    double fx = intrinsicMatrix.at<double>(0, 0);
-    double fy = intrinsicMatrix.at<double>(1, 1);
-    double pcx = intrinsicMatrix.at<double>(0, 2);
-    double pcy = intrinsicMatrix.at<double>(1, 2);
-    double k1 = distortionCoefficients.at<double>(0, 0);
-    double k2 = distortionCoefficients.at<double>(0, 1);
-    double p1 = distortionCoefficients.at<double>(0, 2);
-    double p2 = distortionCoefficients.at<double>(0, 3);
-    double k3 = distortionCoefficients.at<double>(0, 4);
-
-    for (int i = 0; i < numberOfWarpedKeypoints; i++)
-    {
-      // Re-distort the undistorted point
-      double relX = (undistortedPoints[i].x - pcx) / fx;
-      double relY = (undistortedPoints[i].y - pcy) / fy;
-      double r2 = relX * relX + relY * relY;
-      double r4 = r2 * r2;
-      double r6 = r2 * r4;
-      double radial = 1.0 + k1 * r2 + k2 * r4 + k3 * r6;
-
-      double distX = relX * radial + (2.0 * p1 * relX * relY + p2 * (r2 + 2.0 * relX * relX));
-      double distY = relY * radial + (p1 * (r2 + 2.0 * relY * relY) + 2.0 * p2 * relX * relY);
-
-      distX = distX * fx + pcx;
-      distY = distY * fy + pcy;
-
-      finalImagePoints[i] = cv::Point2f(static_cast<float>(distX),
-                                         static_cast<float>(distY));
-    }
-  }
-  else
-  {
-    finalImagePoints = undistortedPoints;
-  }
-
-  // Step 11: Remove duplicate ID assignments
-  // Find which IDs appear more than once and exclude them
+  // Step 10: Remove duplicate ID assignments (keep only unique matches)
   std::vector<int> idCount(gridPoints.rows, 0);
-  for (int i = 0; i < numberOfWarpedKeypoints; i++)
+  for (int i = 0; i < numberOfKeypoints; i++)
   {
     idCount[assignedGridIndex[i]]++;
   }
 
-  // Build final result with only unique assignments
   std::vector<int> validIndexes;
-  for (int i = 0; i < numberOfWarpedKeypoints; i++)
+  for (int i = 0; i < numberOfKeypoints; i++)
   {
     if (idCount[assignedGridIndex[i]] == 1)
     {
@@ -300,6 +245,7 @@ cv::Mat ExtractDots(
     return emptyResult;
   }
 
+  // Step 11: Build result using original distorted image coordinates
   cv::Mat result(static_cast<int>(validIndexes.size()), 6, CV_64F);
 
   for (int i = 0; i < static_cast<int>(validIndexes.size()); i++)
@@ -308,8 +254,8 @@ cv::Mat ExtractDots(
     int gridIdx = assignedGridIndex[idx];
 
     result.at<double>(i, 0) = gridPoints.at<double>(gridIdx, 0); // id
-    result.at<double>(i, 1) = finalImagePoints[idx].x;           // x_pix
-    result.at<double>(i, 2) = finalImagePoints[idx].y;           // y_pix
+    result.at<double>(i, 1) = distortedPts[idx].x;               // x_pix
+    result.at<double>(i, 2) = distortedPts[idx].y;               // y_pix
     result.at<double>(i, 3) = gridPoints.at<double>(gridIdx, 3); // x_mm
     result.at<double>(i, 4) = gridPoints.at<double>(gridIdx, 4); // y_mm
     result.at<double>(i, 5) = gridPoints.at<double>(gridIdx, 5); // z_mm

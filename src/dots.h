@@ -31,16 +31,16 @@ namespace sks
  * Algorithm overview:
  *   1. Gaussian blur and adaptive threshold the input image.
  *   2. Detect blobs using OpenCV's SimpleBlobDetector.
- *   3. If is_distorted is true, undistort the image and re-detect blobs.
+ *   3. If isDistorted, undistort the detected point coordinates (not the
+ *      image) using cv::undistortPoints for homography estimation.
  *   4. Identify the four largest blobs as fiducial reference points.
  *   5. Classify fiducials as top-left, top-right, bottom-left, bottom-right.
  *   6. Compute a homography from the four fiducials to the reference grid.
- *   7. Warp the undistorted image to a canonical face-on view using the
- *      homography, then re-detect blobs in the warped image.
- *   8. Assign each warped dot to its nearest reference grid point.
- *   9. Inverse-transform warped dot locations back to undistorted coordinates.
- *  10. If is_distorted, re-distort coordinates and match to original detections.
- *  11. Remove duplicate ID assignments (keep only unique matches).
+ *   7. Warp all undistorted point coordinates into reference space using
+ *      cv::perspectiveTransform (no image warping).
+ *   8. Assign each warped point to its nearest reference grid point.
+ *   9. Remove duplicate ID assignments (keep only unique matches).
+ *  10. Return the original detected pixel coordinates as image points.
  *
  * If the RMS matching error exceeds the tolerance, returns an empty matrix.
  *
@@ -53,10 +53,8 @@ namespace sks
  * \param indexesOfFourReferencePoints cv::Mat [4x1] CV_32S (int) containing
  *        row indexes into gridPoints identifying the four fiducial dots
  *        (top-left, top-right, bottom-left, bottom-right).
- * \param referenceImageWidth int width of the canonical warped image.
- * \param referenceImageHeight int height of the canonical warped image.
- * \param isDistorted bool if true, the input image has lens distortion and
- *        will be undistorted internally. If false, skips undistortion.
+ * \param isDistorted bool if true, detected point coordinates are undistorted
+ *        internally for homography estimation. If false, skips undistortion.
  * \return cv::Mat [Mx6] CV_64FC1 matrix where each row is
  *         (id, x_pix, y_pix, x_mm, y_mm, z_mm) for each detected dot.
  *         Returns an empty (0x6) matrix if detection fails.
@@ -67,8 +65,6 @@ cv::Mat ExtractDots(
   const cv::Mat& distortionCoefficients,
   const cv::Mat& gridPoints,
   const cv::Mat& indexesOfFourReferencePoints,
-  int referenceImageWidth,
-  int referenceImageHeight,
   bool isDistorted = true
   );
 
