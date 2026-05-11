@@ -76,6 +76,12 @@ points_3d = sks.triangulate_points_using_hartley(
 )
 ```
 
+## Releasing
+
+1. Update ```pyproject.toml``` with the version number
+2. Tag on main branch
+3. Push tag
+
 ## Contributing
 
 1. Raise an issue on GitHub
